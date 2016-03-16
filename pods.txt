@@ -6,46 +6,45 @@ post :: pod
     authors :: [author]
     categories :: taxonomy
     marginalised_voices :: taxonomy
-    greographic :: taxonomy
-    online_syndications :: pod
-        id :: str
-        online_pubisher :: pod
-            id :: str
-            name :: str
+    online_syndications :: [pod]
+        online_syndication_id :: str
+        pubisher :: pod
+            print_publisher_id :: str
+            print_publisher_name :: str
             geographic :: taxonomy (national or regional)
             reach :: taxonomy (mainstream or community)
             media_form = online
         advertising_value_equivalent :: int
         impact :: longstr
-    print_syndications :: pod
-        id :: str
+    print_syndications :: [pod]
+        print_syndication_id :: str
         print_page :: str
         print_size :: str
         print_publisher :: pod
-            id :: str
-            name :: str
+            print_publisher_id :: str
+            print_publisher_name :: str
             geographic :: taxonomy (national or regional)
             reach :: taxonomy (mainstream or community)
             circulation :: int
             media_form = print
         advertising_value_equivalent :: int
         impact :: longstr
-    tv_syndications :: pod
-        id :: str
+    tv_syndications :: [pod]
+        tv_syndication_id :: str
         tv_broadcaster :: pod
-            id :: str
-            name :: str
+            tv_broadcaster_id :: str
+            tv_broadcaster_name :: str
             geographic :: taxonomy (national or regional)
             reach :: taxonomy (mainstream or community)
             media_form = tv
         advertising_value_equivalent :: int
         tams :: int
         impact :: longstr
-    radio_syndications :: pod
-        id :: str
+    radio_syndications :: [pod]
+        radio_syndication_id :: str
         radio_broadcaster :: pod
-            id :: str
-            name :: str
+            radio_broadcaster_id :: str
+            radio_publisher_name :: str
             geographic :: taxonomy (national or regional)
             reach :: taxonomy (mainstream or community)
             media_form = radio
