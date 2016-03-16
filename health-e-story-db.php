@@ -25,6 +25,19 @@ function story_metadata_page() {
      <p><a href="/health-e-story-db/data.csv">Download</a></p>
   </div>
   <?php
+  $post = pods('post', 2496, true);
+  $syndications = $post->field('online_syndications');
+  foreach ($syndications as $syndication) {
+    $syndication_pod = pods('online_syndication', $syndication["ID"], true);
+    $outlet = $syndication_pod->field('outlet');
+    $outlet_pod = pods('online_publisher', $outlet["ID"], true);
+
+    ob_start();
+    var_dump($outlet_pod->field('readership'));
+    $result = ob_get_clean();
+    echo '<pre>' . $result . '</pre>';
+  }
+
 }
 
 add_action('template_redirect','health_e_metadata_export_template_redirect');
