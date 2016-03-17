@@ -144,7 +144,7 @@
           "name": "advertising_value_equivalent",
           "id": 14641
         },
-        "broadcaster": {
+        "outlet": {
           "pick_groupby": "",
           "pick_orderby": "",
           "pick_where": "",
@@ -169,7 +169,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14673",
+          "sister_id": "",
           "pick_val": "tv_broadcaster",
           "pick_object": "post_type",
           "weight": 1,
@@ -178,7 +178,7 @@
           "help": "",
           "description": "",
           "label": "Broadcaster",
-          "name": "broadcaster",
+          "name": "outlet",
           "id": 14642
         },
         "post": {
@@ -433,7 +433,7 @@
       "public": "1",
       "show_ui": "1",
       "supports_title": "1",
-      "supports_editor": "1",
+      "supports_editor": "0",
       "publicly_queryable": "1",
       "exclude_from_search": "0",
       "capability_type": "post",
@@ -541,7 +541,7 @@
           "name": "advertising_value_equivalent",
           "id": 14651
         },
-        "broadcaster": {
+        "outlet": {
           "pick_groupby": "",
           "pick_orderby": "",
           "pick_where": "",
@@ -566,7 +566,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14681",
+          "sister_id": "",
           "pick_val": "radio_broadcaster",
           "pick_object": "post_type",
           "weight": 1,
@@ -575,7 +575,7 @@
           "help": "",
           "description": "",
           "label": "Broadcaster",
-          "name": "broadcaster",
+          "name": "outlet",
           "id": 14652
         },
         "post": {
@@ -938,7 +938,7 @@
           "name": "advertising_value_equivalent",
           "id": 14661
         },
-        "print_publisher": {
+        "outlet": {
           "pick_groupby": "",
           "pick_orderby": "",
           "pick_where": "",
@@ -963,7 +963,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14700",
+          "sister_id": "",
           "pick_val": "print_publisher",
           "pick_object": "post_type",
           "weight": 1,
@@ -972,7 +972,7 @@
           "help": "",
           "description": "",
           "label": "Publisher",
-          "name": "print_publisher",
+          "name": "outlet",
           "id": 14662
         },
         "post": {
@@ -1027,7 +1027,7 @@
       "public": "1",
       "show_ui": "1",
       "supports_title": "1",
-      "supports_editor": "1",
+      "supports_editor": "0",
       "publicly_queryable": "1",
       "exclude_from_search": "0",
       "capability_type": "post",
@@ -1182,6 +1182,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
+          "pick_custom": "Regional\nNational",
           "required": "0",
           "pick_format_type": "single",
           "pick_format_single": "dropdown",
@@ -1524,7 +1525,7 @@
           "name": "url",
           "id": 14677
         },
-        "publisher": {
+        "outlet": {
           "pick_groupby": "",
           "pick_orderby": "",
           "pick_where": "",
@@ -1551,14 +1552,14 @@
           "unique": "0",
           "sister_id": "14641",
           "pick_val": "",
-          "pick_object": "online_publisher1",
+          "pick_object": "",
           "weight": 1,
           "type": "pick",
           "class": "",
           "help": "",
           "description": "",
           "label": "Publisher",
-          "name": "publisher",
+          "name": "outlet",
           "id": 14678
         },
         "post": {
@@ -1860,7 +1861,7 @@
     }
   },
   "meta": {
-    "build": 1458207242,
+    "build": 1458212938,
     "version": "2.6.1"
   }
 }

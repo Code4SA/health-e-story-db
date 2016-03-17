@@ -25,18 +25,6 @@ function story_metadata_page() {
      <p><a href="/health-e-story-db/Health-e_Story_DB.csv">Download</a></p>
   </div>
   <?php
-  //$post = pods('post', 2496, true);
-  //$syndications = $post->field('online_syndications');
-  //foreach ($syndications as $syndication) {
-  //  $syndication_pod = pods('online_syndication', $syndication["ID"], true);
-  //  $outlet = $syndication_pod->field('outlet');
-  //  $outlet_pod = pods('online_publisher', $outlet["ID"], true);
-  //
-  //  ob_start();
-  //  var_dump($outlet_pod->field('readership'));
-  //  $result = ob_get_clean();
-  //  echo '<pre>' . $result . '</pre>';
-  //}
 
 }
 
@@ -47,32 +35,56 @@ function health_e_metadata_export_template_redirect() {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
   } else {
     if ($_SERVER['REQUEST_URI']=='/health-e-story-db/Health-e_Story_DB.csv') {
-      header("Content-type: application/x-msdownload",true,200);
+      header("Content-type: application/x-msdownload", true, 200);
       header("Content-Disposition: attachment; filename=Health-e_Story_DB.csv");
       header("Pragma: no-cache");
       header("Expires: 0");
-      echo 'data';
+
+      $output = fopen('php://output', 'w');
+
+      $post_pod = pods('post', 13149, true);
+
+      $syndications = $post_pod->field('print_syndications');
+      foreach ($syndications as &$syndication) {
+        $syndication_pod = pods('online_syndication', $syndication["ID"], true);
+        $publisher = $syndication_pod->field('outlet');
+        $publisher_pod = pods('print_publisher', $publisher["id"], true);
+
+        echo "\n";
+        fputcsv($output,
+                array($post_pod->field('ID'),
+                      $post_pod->field('title'),
+                      $syndication['ID'],
+                      $syndication['post_title'],
+                      $publisher['id'],
+                      $publisher['name']
+                      ), "\t");
+
+        debug($syndication_pod);
+      }
+
       exit();
     }
   }
 }
 
+function debug($val) {
+  ob_start();
+  var_dump($val);
+  $result = ob_get_clean();
+  echo "\n=========================\n";
+  echo  $result ;
+  echo "=========================\n";
+}
 
 
 
 //add_action('post_edit_form_tag', 'debug');
-add_action( 'pods_meta_meta_post_radio_publications', 'post_edit_form_tag', 10, 3);
+add_action( 'pods_meta_meta_post_radio_syndications', 'post_edit_form_tag', 10, 3);
 add_action( 'pods_meta_meta_post_print_syndications', 'post_edit_form_tag', 10, 3 );
-add_action( 'pods_meta_meta_post_tv_broadcasts', 'post_edit_form_tag', 10, 3 );
-add_action( 'pods_meta_meta_post_online_publications', 'post_edit_form_tag', 10, 3 );
+add_action( 'pods_meta_meta_post_tv_syndications', 'post_edit_form_tag', 10, 3 );
+add_action( 'pods_meta_meta_post_online_syndications', 'post_edit_form_tag', 10, 3 );
 
-function debug() {
-  global $wp_filter;
-  ob_start();
-  var_dump($wp_filter);
-  $result = ob_get_clean();
-  echo ' data-vardump="' . $result . '"';
-}
 
 function post_edit_form_tag($post, $field, $pod) {
   //
