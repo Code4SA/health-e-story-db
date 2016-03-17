@@ -70,7 +70,7 @@ function health_e_metadata_export_template_redirect() {
 
       $post_pod = pods('post', 13149, true);
 
-      $print_syndications = $post_pod->field('print_syndications');
+      $syndications = $post_pod->field('print_syndications');
       $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
       $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
       $categories = get_the_category($post_pod->field('ID'));
@@ -78,10 +78,28 @@ function health_e_metadata_export_template_redirect() {
       foreach ($categories as &$category) {
         foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
           foreach ($author_terms as &$author_term) {
-            foreach ($print_syndications as &$print_syndication) {
-              $print_syndication_pod = pods('print_syndication', $syndication["ID"], true);
-              $print_publisher = $print_syndication_pod->field('outlet');
-              $print_publisher_pod = pods('print_publisher', $publisher["ID"], true);
+            foreach ($syndications as &$syndication) {
+              $syndication_pod = pods('print_syndication', $syndication["ID"], true);
+              $outlet = $syndication_pod->field('outlet');
+              switch ($syndication_pod->pod) {
+              case 'print_syndication':
+                $media_type = 'print';
+                $outlet_pod = 'print_publisher';
+                break;
+              case 'online_syndication':
+                $media_type = 'online';
+                $outlet_pod = 'online_publisher';
+                break;
+              case 'radio_syndication':
+                $media_type = 'radio';
+                $outlet_pod = 'radio_broadcaster';
+                break;
+              case 'tv_syndication':
+                $media_type = 'tv';
+                $outlet_pod = 'tv_broadcaster';
+                break;
+              }
+              $outlet_pod = pods($outlet_pod, $publisher["ID"], true);
 
               fputcsv($output,
                       array($post_pod->field('ID'),
@@ -90,15 +108,16 @@ function health_e_metadata_export_template_redirect() {
                             get_user_by('login', $author_term->name)->data->display_name,
                             $category->name,
                             $marginalised_voice_term->name,
-                            $print_syndication['ID'],
-                            $print_syndication['post_title'],
-                            'print',
-                            $print_publisher['ID'],
-                            $print_publisher['post_title'],
-                            $print_publisher_pod->field('geographic'),
-                            $print_publisher_pod->field('reach'),
-                            $print_syndication_pod->field('advertising_value_equivalent'),
-                            $print_syndication_pod->field('impact')
+                            $syndication['ID'],
+                            $syndication['post_title'],
+                            $media_type,
+                            $outlet['ID'],
+                            $outlet['post_title'],
+                            $outlet_pod->field('geographic'),
+                            $outlet_pod->field('reach'),
+                            $syndication_pod->field('advertising_value_equivalent'),
+                            $syndication_pod->field('impact')
+
                             ), $delim);
 
             }
