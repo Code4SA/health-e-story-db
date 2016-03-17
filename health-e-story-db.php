@@ -46,21 +46,20 @@ function health_e_metadata_export_template_redirect() {
 
       $syndications = $post_pod->field('print_syndications');
       foreach ($syndications as &$syndication) {
-        $syndication_pod = pods('online_syndication', $syndication["ID"], true);
+        $syndication_pod = pods('print_syndication', $syndication["ID"], true);
         $publisher = $syndication_pod->field('outlet');
-        $publisher_pod = pods('print_publisher', $publisher["id"], true);
+        $publisher_pod = pods('print_publisher', $publisher["ID"], true);
 
-        echo "\n";
         fputcsv($output,
                 array($post_pod->field('ID'),
                       $post_pod->field('title'),
                       $syndication['ID'],
                       $syndication['post_title'],
-                      $publisher['id'],
-                      $publisher['name']
+                      $publisher['ID'],
+                      $publisher['post_title']
                       ), "\t");
 
-        debug($syndication_pod);
+        //debug($syndication_pod->field('outlet'));
       }
 
       exit();
