@@ -22,33 +22,33 @@ function story_metadata_page() {
   }
   ?>
   <div class="wrap">
-     <p><a href="/health-e-story-db/data.csv">Download</a></p>
+     <p><a href="/health-e-story-db/Health-e_Story_DB.csv">Download</a></p>
   </div>
   <?php
-  $post = pods('post', 2496, true);
-  $syndications = $post->field('online_syndications');
-  foreach ($syndications as $syndication) {
-    $syndication_pod = pods('online_syndication', $syndication["ID"], true);
-    $outlet = $syndication_pod->field('outlet');
-    $outlet_pod = pods('online_publisher', $outlet["ID"], true);
-
-    ob_start();
-    var_dump($outlet_pod->field('readership'));
-    $result = ob_get_clean();
-    echo '<pre>' . $result . '</pre>';
-  }
+  //$post = pods('post', 2496, true);
+  //$syndications = $post->field('online_syndications');
+  //foreach ($syndications as $syndication) {
+  //  $syndication_pod = pods('online_syndication', $syndication["ID"], true);
+  //  $outlet = $syndication_pod->field('outlet');
+  //  $outlet_pod = pods('online_publisher', $outlet["ID"], true);
+  //
+  //  ob_start();
+  //  var_dump($outlet_pod->field('readership'));
+  //  $result = ob_get_clean();
+  //  echo '<pre>' . $result . '</pre>';
+  //}
 
 }
 
-add_action('template_redirect','health_e_metadata_export_template_redirect');
+add_action('wp','health_e_metadata_export_template_redirect', 0);
 
 function health_e_metadata_export_template_redirect() {
   if (!current_user_can( 'export' ) ) {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
   } else {
-    if ($_SERVER['REQUEST_URI']=='/health-e-story-db/data.csv') {
+    if ($_SERVER['REQUEST_URI']=='/health-e-story-db/Health-e_Story_DB.csv') {
       header("Content-type: application/x-msdownload",true,200);
-      header("Content-Disposition: attachment; filename=data.csv");
+      header("Content-Disposition: attachment; filename=Health-e_Story_DB.csv");
       header("Pragma: no-cache");
       header("Expires: 0");
       echo 'data';
