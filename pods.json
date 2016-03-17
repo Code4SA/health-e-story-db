@@ -1,6 +1,7 @@
 {
   "pods": {
     "14667": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
       "menu_position": "0",
@@ -9,9 +10,7 @@
       "built_in_taxonomies_slide-page": "0",
       "built_in_taxonomies_province": "0",
       "built_in_taxonomies_post_tag": "0",
-      "built_in_taxonomies_marginalisedvoice": "0",
       "built_in_taxonomies_link_category": "0",
-      "built_in_taxonomies_geographic": "0",
       "built_in_taxonomies_district": "0",
       "built_in_taxonomies_clinic_type": "0",
       "built_in_taxonomies_city": "0",
@@ -50,7 +49,8 @@
       "show_in_menu": "1",
       "fields": {
         "tams": {
-          "number_repeatable": 0,
+          "number_repeatable": "0",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -206,7 +206,7 @@
           "pick_format_single": "autocomplete",
           "pick_format_type": "single",
           "required": "0",
-          "sister_id": "",
+          "sister_id": "14704",
           "pick_val": "post",
           "pick_object": "post_type",
           "weight": 0,
@@ -225,10 +225,11 @@
       "type": "post_type",
       "description": "",
       "label": "TV Syndications",
-      "name": "tvsyndication",
+      "name": "tv_syndication",
       "id": 14667
     },
     "14660": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
       "menu_position": "0",
@@ -303,7 +304,7 @@
           "pick_format_type": "single",
           "required": "0",
           "sister_id": "14669",
-          "pick_val": "tvsyndication",
+          "pick_val": "tv_syndication",
           "pick_object": "post_type",
           "weight": 3,
           "type": "pick",
@@ -430,6 +431,7 @@
       "id": 14660
     },
     "14662": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
       "menu_position": "0",
@@ -438,9 +440,7 @@
       "built_in_taxonomies_slide-page": "0",
       "built_in_taxonomies_province": "0",
       "built_in_taxonomies_post_tag": "0",
-      "built_in_taxonomies_marginalisedvoice": "0",
       "built_in_taxonomies_link_category": "0",
-      "built_in_taxonomies_geographic": "0",
       "built_in_taxonomies_district": "0",
       "built_in_taxonomies_clinic_type": "0",
       "built_in_taxonomies_city": "0",
@@ -479,7 +479,8 @@
       "show_in_menu": "1",
       "fields": {
         "impact": {
-          "paragraph_repeatable": 0,
+          "paragraph_repeatable": "0",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -510,7 +511,8 @@
           "id": 14666
         },
         "advertising_value_equivalent": {
-          "currency_repeatable": 0,
+          "currency_repeatable": "0",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -549,6 +551,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -585,6 +588,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -601,7 +605,7 @@
           "pick_format_single": "autocomplete",
           "pick_format_type": "single",
           "required": "0",
-          "sister_id": "",
+          "sister_id": "14703",
           "pick_val": "post",
           "pick_object": "post_type",
           "weight": 0,
@@ -620,10 +624,11 @@
       "type": "post_type",
       "description": "",
       "label": "Radio Syndication",
-      "name": "radiosyndication",
+      "name": "radio_syndication",
       "id": 14662
     },
     "14661": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
       "menu_position": "0",
@@ -727,7 +732,7 @@
           "pick_format_type": "multi",
           "required": "0",
           "sister_id": "14664",
-          "pick_val": "radiosyndication",
+          "pick_val": "radio_syndication",
           "pick_object": "post_type",
           "weight": 2,
           "type": "pick",
@@ -825,6 +830,7 @@
       "id": 14661
     },
     "14672": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
       "menu_position": "0",
@@ -833,7 +839,6 @@
       "built_in_taxonomies_slide-page": "0",
       "built_in_taxonomies_province": "0",
       "built_in_taxonomies_post_tag": "0",
-      "built_in_taxonomies_marginalisedvoice": "0",
       "built_in_taxonomies_link_category": "0",
       "built_in_taxonomies_district": "0",
       "built_in_taxonomies_clinic_type": "0",
@@ -963,7 +968,7 @@
           "pick_format_type": "single",
           "required": "0",
           "sister_id": "14700",
-          "pick_val": "printpublisher",
+          "pick_val": "print_publisher",
           "pick_object": "post_type",
           "weight": 1,
           "type": "pick",
@@ -1000,7 +1005,7 @@
           "pick_format_type": "single",
           "required": "0",
           "sister_id": "",
-          "pick_val": "post",
+          "pick_val": "print_syndication",
           "pick_object": "post_type",
           "weight": 0,
           "type": "pick",
@@ -1018,10 +1023,11 @@
       "type": "post_type",
       "description": "",
       "label": "Print Syndications",
-      "name": "printsyndication",
+      "name": "print_syndication",
       "id": 14672
     },
     "14697": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
       "menu_position": "0",
@@ -1030,7 +1036,6 @@
       "built_in_taxonomies_slide-page": "0",
       "built_in_taxonomies_province": "0",
       "built_in_taxonomies_post_tag": "0",
-      "built_in_taxonomies_marginalisedvoice": "0",
       "built_in_taxonomies_link_category": "0",
       "built_in_taxonomies_district": "0",
       "built_in_taxonomies_clinic_type": "0",
@@ -1070,7 +1075,8 @@
       "show_in_menu": "1",
       "fields": {
         "media_form": {
-          "text_repeatable": 0,
+          "text_repeatable": "0",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -1105,6 +1111,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -1122,7 +1129,7 @@
           "pick_format_type": "multi",
           "required": "0",
           "sister_id": "14674",
-          "pick_val": "printsyndication",
+          "pick_val": "print_syndication",
           "pick_object": "post_type",
           "weight": 2,
           "type": "pick",
@@ -1141,6 +1148,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -1203,7 +1211,7 @@
           "class": "",
           "help": "",
           "description": "",
-          "label": "geographic",
+          "label": "Geographic",
           "name": "geographic",
           "id": 14698
         }
@@ -1214,14 +1222,123 @@
       "type": "post_type",
       "description": "",
       "label": "Print Publisher",
-      "name": "printpublisher",
+      "name": "print_publisher",
       "id": 14697
     },
     "14649": {
-      "built_in_taxonomies_geographic": "0",
-      "built_in_taxonomies_marginalisedvoice": "1",
       "show_in_menu": 1,
       "fields": {
+        "tv_syndications": {
+          "pick_groupby": "",
+          "pick_orderby": "",
+          "pick_where": "",
+          "pick_display": "",
+          "pick_table_index": "",
+          "pick_table_id": "",
+          "pick_select_text": "",
+          "unique": "0",
+          "roles_allowed": [
+            "administrator"
+          ],
+          "read_only": "0",
+          "hidden": "0",
+          "restrict_capability": "0",
+          "restrict_role": "0",
+          "admin_only": "0",
+          "pick_user_role": [],
+          "pick_allow_html": "0",
+          "pick_limit": "0",
+          "pick_taggable": "0",
+          "pick_format_multi": "autocomplete",
+          "pick_format_single": "dropdown",
+          "pick_format_type": "multi",
+          "required": "0",
+          "sister_id": "14668",
+          "pick_val": "tv_syndication",
+          "pick_object": "post_type",
+          "weight": 3,
+          "type": "pick",
+          "class": "",
+          "help": "",
+          "description": "",
+          "label": "TV Syndications",
+          "name": "tv_syndications",
+          "id": 14704
+        },
+        "radio_syndications": {
+          "pick_groupby": "",
+          "pick_orderby": "",
+          "pick_where": "",
+          "pick_display": "",
+          "pick_table_index": "",
+          "pick_table_id": "",
+          "pick_select_text": "",
+          "unique": "0",
+          "roles_allowed": [
+            "administrator"
+          ],
+          "read_only": "0",
+          "hidden": "0",
+          "restrict_capability": "0",
+          "restrict_role": "0",
+          "admin_only": "0",
+          "pick_user_role": [],
+          "pick_allow_html": "0",
+          "pick_limit": "0",
+          "pick_taggable": "0",
+          "pick_format_multi": "autocomplete",
+          "pick_format_single": "dropdown",
+          "pick_format_type": "multi",
+          "required": "0",
+          "sister_id": "14663",
+          "pick_val": "radio_syndication",
+          "pick_object": "post_type",
+          "weight": 2,
+          "type": "pick",
+          "class": "",
+          "help": "",
+          "description": "",
+          "label": "Radio Syndications",
+          "name": "radio_syndications",
+          "id": 14703
+        },
+        "print_syndications": {
+          "pick_groupby": "",
+          "pick_orderby": "",
+          "pick_where": "",
+          "pick_display": "",
+          "pick_table_index": "",
+          "pick_table_id": "",
+          "pick_select_text": "",
+          "unique": "0",
+          "roles_allowed": [
+            "administrator"
+          ],
+          "read_only": "0",
+          "hidden": "0",
+          "restrict_capability": "0",
+          "restrict_role": "0",
+          "admin_only": "0",
+          "pick_user_role": [],
+          "pick_allow_html": "0",
+          "pick_limit": "0",
+          "pick_taggable": "0",
+          "pick_format_multi": "autocomplete",
+          "pick_format_single": "dropdown",
+          "pick_format_type": "multi",
+          "required": "0",
+          "sister_id": "",
+          "pick_val": "print_syndication",
+          "pick_object": "post_type",
+          "weight": 1,
+          "type": "pick",
+          "class": "",
+          "help": "",
+          "description": "",
+          "label": "Print Syndications",
+          "name": "print_syndications",
+          "id": 14702
+        },
         "online_syndications": {
           "pick_groupby": "",
           "pick_orderby": "",
@@ -1230,6 +1347,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
@@ -1254,7 +1372,7 @@
           "class": "",
           "help": "",
           "description": "",
-          "label": "online_syndications",
+          "label": "Online Syndications",
           "name": "online_syndications",
           "id": 14650
         }
@@ -1269,6 +1387,7 @@
       "id": 14649
     },
     "14639": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "built_in_taxonomies_marginalisedvoice": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
@@ -1492,6 +1611,7 @@
       "id": 14639
     },
     "14640": {
+      "built_in_taxonomies_marginalised_voices": "0",
       "built_in_taxonomies_marginalisedvoice": "0",
       "show_in_admin_bar": "1",
       "show_in_nav_menus": "1",
@@ -1691,17 +1811,15 @@
       "id": 14640
     },
     "14654": {
-      "built_in_post_types_online_publisher2": "0",
-      "built_in_post_types_onlinepublisher": "0",
-      "built_in_post_types_online_publisher1": "0",
+      "built_in_post_types_print_publisher": "0",
+      "built_in_post_types_print_syndication": "0",
+      "built_in_post_types_tv_syndication": "0",
+      "built_in_post_types_radio_syndication": "0",
       "built_in_post_types_tv_broadcaster": "0",
       "built_in_post_types_radio_broadcaster": "0",
-      "built_in_post_types_print_publisher": "0",
       "built_in_post_types_printsyndication": "0",
       "built_in_post_types_tvsyndication": "0",
       "built_in_post_types_radiosyndication": "0",
-      "built_in_post_types_radiobroadcaster": "0",
-      "built_in_post_types_tvbroadcaster": "0",
       "built_in_post_types_printpublisher": "0",
       "show_admin_column": "0",
       "show_tagcloud": "0",
@@ -1739,12 +1857,12 @@
       "type": "taxonomy",
       "description": "",
       "label": "Marginalised Voices",
-      "name": "marginalisedvoice",
+      "name": "marginalised_voices",
       "id": 14654
     }
   },
   "meta": {
-    "build": 1458140367,
+    "build": 1458203467,
     "version": "2.6.1"
   }
 }
