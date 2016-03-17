@@ -41,6 +41,15 @@ function health_e_metadata_export_template_redirect() {
       header("Expires: 0");
 
       $output = fopen('php://output', 'w');
+      $delim = "\t";
+      fputcsv($output,
+              array('post_id',
+                    'headline',
+                    'syndication_id',
+                    'syndication_name',
+                    'print_publisher_id',
+                    'print_publisher_name'
+                    ), $delim);
 
       $post_pod = pods('post', 13149, true);
 
@@ -57,7 +66,7 @@ function health_e_metadata_export_template_redirect() {
                       $syndication['post_title'],
                       $publisher['ID'],
                       $publisher['post_title']
-                      ), "\t");
+                      ), $delim);
 
         //debug($syndication_pod->field('outlet'));
       }
