@@ -58,29 +58,33 @@ function health_e_metadata_export_template_redirect() {
       $post_pod = pods('post', 13149, true);
 
       $syndications = $post_pod->field('print_syndications');
+      $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
+      $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
 
-      foreach (wp_get_post_terms($post_pod->field('ID'), 'author') as &$author_term) {
-        //debug($author_term);
-        debug(get_user_by('login', $author_term->name)->data->display_name);
-        foreach ($syndications as &$syndication) {
-          $syndication_pod = pods('print_syndication', $syndication["ID"], true);
-          $publisher = $syndication_pod->field('outlet');
-          $publisher_pod = pods('print_publisher', $publisher["ID"], true);
+      foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
+        foreach ($author_terms as &$author_term) {
+          //debug($author_term);
 
-          fputcsv($output,
-                  array($post_pod->field('ID'),
-                        $post_pod->field('title'),
-                        $post_pod->field('date'),
-                        get_user_by('login', $author_term->name)->data->display_name,
-                        $syndication['ID'],
-                        $syndication['post_title'],
-                        $publisher['ID'],
-                        $publisher['post_title']
-                        ), $delim);
+          foreach ($syndications as &$syndication) {
+            $syndication_pod = pods('print_syndication', $syndication["ID"], true);
+            $publisher = $syndication_pod->field('outlet');
+            $publisher_pod = pods('print_publisher', $publisher["ID"], true);
 
+            fputcsv($output,
+                    array($post_pod->field('ID'),
+                          $post_pod->field('title'),
+                          $post_pod->field('date'),
+                          get_user_by('login', $author_term->name)->data->display_name,
+                          $marginalised_voice->name,
+                          $syndication['ID'],
+                          $syndication['post_title'],
+                          $publisher['ID'],
+                          $publisher['post_title']
+                          ), $delim);
+
+          }
         }
       }
-
       exit();
     }
   }
