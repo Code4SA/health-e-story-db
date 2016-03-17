@@ -51,8 +51,13 @@ function health_e_metadata_export_template_redirect() {
                     'marginalised_voice',
                     'syndication_id',
                     'syndication_name',
+                    'media_form',
                     'print_publisher_id',
-                    'print_publisher_name'
+                    'print_publisher_name',
+                    'geographic',
+                    'reach',
+                    'advertising_value_equivalent',
+                    'impact'
                     ), $delim);
 
       $post_pod = pods('post', 13149, true);
@@ -61,8 +66,6 @@ function health_e_metadata_export_template_redirect() {
       $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
       $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
       $categories = get_the_category($post_pod->field('ID'));
-
-      //debug($categories);
 
       foreach ($categories as &$category) {
         foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
@@ -81,8 +84,13 @@ function health_e_metadata_export_template_redirect() {
                             $marginalised_voice_term->name,
                             $syndication['ID'],
                             $syndication['post_title'],
+                            'print',
                             $publisher['ID'],
-                            $publisher['post_title']
+                            $publisher['post_title'],
+                            $publisher_pod->field('geographic'),
+                            $publisher_pod->field('reach'),
+                            $syndication_pod->field('advertising_value_equivalent'),
+                            $syndication_pod->field('impact')
                             ), $delim);
 
             }
