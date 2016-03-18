@@ -68,58 +68,86 @@ function health_e_metadata_export_template_redirect() {
                     'tams'
                     ), $delim);
 
-      $post_pod = pods('post', 13149, true);
+      $post_pods = array(pods('post', 13149, true),
+                         pods('post', 14344, true));
 
-      $syndications = $post_pod->field('print_syndications');
-      $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
-      $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
-      $categories = get_the_category($post_pod->field('ID'));
+      foreach ($post_pods as &$post_pod) {
 
-      foreach ($categories as &$category) {
-        foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
-          foreach ($author_terms as &$author_term) {
-            foreach ($syndications as &$syndication) {
-              $syndication_pod = pods('print_syndication', $syndication["ID"], true);
-              $outlet = $syndication_pod->field('outlet');
-              switch ($syndication_pod->pod) {
-              case 'print_syndication':
-                $media_type = 'print';
-                $outlet_pod = 'print_publisher';
-                break;
-              case 'online_syndication':
-                $media_type = 'online';
-                $outlet_pod = 'online_publisher';
-                break;
-              case 'radio_syndication':
-                $media_type = 'radio';
-                $outlet_pod = 'radio_broadcaster';
-                break;
-              case 'tv_syndication':
-                $media_type = 'tv';
-                $outlet_pod = 'tv_broadcaster';
-                break;
+        $print_syndications = $post_pod->field('print_syndications');
+        $online_syndications = $post_pod->field('online_syndications');
+        $radio_syndications = $post_pod->field('radio_syndications');
+        $tv_syndications = $post_pod->field('tv_syndications');
+
+        $syndications = array_merge($print_syndications ? $print_syndications : array(),
+                                    $online_syndications ? $online_syndications : array(),
+                                    $radio_syndications ? $radio_syndications : array(),
+                                    $tv_syndications ? $tv_syndications : array());
+
+        // If there are no syndications, just fake one with StdClass to output
+        // whatever data we have for the story.
+        $syndications = $syndications ? $syndications : array(array());
+
+        $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
+        $marginalised_voice_terms = $marginalised_voice_terms ? $marginalised_voice_terms : array(new StdClass);
+        $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
+        $author_terms = $author_terms ? $author_terms : array(new StdClass);
+        $categories = get_the_category($post_pod->field('ID'));
+        $categories = $categories ? $categories : array(new StdClass);
+
+        foreach ($categories as &$category) {
+          foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
+            foreach ($author_terms as &$author_term) {
+              foreach ($syndications as &$syndication) {
+                $syndication_pod = pods('print_syndication', $syndication["ID"], true);
+                $outlet = $syndication_pod->field('outlet');
+                switch ($syndication_pod->pod) {
+                case 'print_syndication':
+                  $media_type = 'print';
+                  $outlet_pod_name = 'print_publisher';
+                  break;
+                case 'online_syndication':
+                  $media_type = 'online';
+                  $outlet_pod_name = 'online_publisher';
+                  break;
+                case 'radio_syndication':
+                  $media_type = 'radio';
+                  $outlet_pod_name = 'radio_broadcaster';
+                  break;
+                case 'tv_syndication':
+                  $media_type = 'tv';
+                  $outlet_pod_name = 'tv_broadcaster';
+                  break;
+                case NULL:
+                  $media_type = 'healthe_only';
+                  $outlet_pod_name = NULL;
+                  break;
+                default:
+                  $media_type = '';
+                  $outlet_pod_name = NULL;
+                  break;
+                }
+                $outlet_pod = pods($outlet_pod_name, $publisher["ID"], true);
+
+                fputcsv($output,
+                        array($post_pod->field('ID'),
+                              $post_pod->field('title'),
+                              $post_pod->field('date'),
+                              get_user_by('login', $author_term->name)->data->display_name,
+                              $category->name,
+                              $marginalised_voice_term->name,
+                              $syndication['ID'],
+                              $syndication['post_title'],
+                              $media_type . '>>>',
+                              $outlet['ID'],
+                              $outlet['post_title'],
+                              $outlet_pod->field('geographic'),
+                              $outlet_pod->field('reach'),
+                              $syndication_pod->field('advertising_value_equivalent'),
+                              $syndication_pod->field('impact')
+
+                              ), $delim);
+
               }
-              $outlet_pod = pods($outlet_pod, $publisher["ID"], true);
-
-              fputcsv($output,
-                      array($post_pod->field('ID'),
-                            $post_pod->field('title'),
-                            $post_pod->field('date'),
-                            get_user_by('login', $author_term->name)->data->display_name,
-                            $category->name,
-                            $marginalised_voice_term->name,
-                            $syndication['ID'],
-                            $syndication['post_title'],
-                            $media_type,
-                            $outlet['ID'],
-                            $outlet['post_title'],
-                            $outlet_pod->field('geographic'),
-                            $outlet_pod->field('reach'),
-                            $syndication_pod->field('advertising_value_equivalent'),
-                            $syndication_pod->field('impact')
-
-                            ), $delim);
-
             }
           }
         }
