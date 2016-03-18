@@ -74,19 +74,23 @@ function health_e_metadata_export_template_redirect() {
       foreach ($post_pods as &$post_pod) {
 
         $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
-        $marginalised_voice_terms = $marginalised_voice_terms ? $marginalised_voice_terms : array(new StdClass);
+        $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
         $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
-        $author_terms = $author_terms ? $author_terms : array(new StdClass);
+        $author_terms = $author_terms ?: array(new StdClass);
         $categories = get_the_category($post_pod->field('ID'));
-        $categories = $categories ? $categories : array(new StdClass);
+        $categories = $categories ?: array(new StdClass);
 
-        $print_syndications = array_or_dummy($post_pod->field('print_syndications'), array());
-        $online_syndications = array_or_dummy($post_pod->field('online_syndications'), array());
-        $radio_syndications = array_or_dummy($post_pod->field('radio_syndications'), array());
-        $tv_syndications = array_or_dummy($post_pod->field('tv_syndications'), array());
+        $print_syndications = $post_pod->field('print_syndications') ?: array();
+        $online_syndications = $post_pod->field('online_syndications') ?: array();
+        $radio_syndications = $post_pod->field('radio_syndications') ?: array();
+        $tv_syndications = $post_pod->field('tv_syndications') ?: array();
 
-        if (!($print_syndications|$online_syndications|$radio_syndications|$tv_syndications)) {
+        //debug($post_pod->field('print_syndications'));
+
+        if (!($print_syndications||$online_syndications||$radio_syndications||$tv_syndications)) {
           $dummy_syndications = array(array());
+        } else {
+          $dummy_syndications = array();
         }
 
         $runs = array(array($print_syndications, 'print', '_publisher'),
@@ -98,8 +102,9 @@ function health_e_metadata_export_template_redirect() {
         foreach ($runs as &$run) {
           foreach ($run[0] as &$syndication) {
             write_syndication($output,
+                              $delim,
                               $post_pod,
-                              $syndication
+                              $syndication,
                               $marginalised_voice_terms,
                               $categories,
                               $author_terms,
@@ -114,11 +119,8 @@ function health_e_metadata_export_template_redirect() {
   }
 }
 
-function array_or_dummy($potential_array, $dummy) {
-  return $potential_array ? $potential_array : $dummy;
-}
-
 function write_syndication($output,
+                           $delim,
                            $post_pod,
                            $syndication,
                            $marginalised_voice_terms,
@@ -127,9 +129,9 @@ function write_syndication($output,
                            $media_type,
                            $outlet_pod_name) {
 
-  $syndication_pod = pods($media_type . '_syndication', $syndication["ID"], true);
+  $syndication_pod = pods($media_type . '_syndication', $syndication["ID"], true) ?: pods();
   $outlet = $syndication_pod->field('outlet');
-  $outlet_pod = pods($media_type . $outlet_pod_name, $publisher["ID"], true);
+  $outlet_pod = pods($media_type . $outlet_pod_name, $publisher["ID"], true) ?: pods();
 
   foreach ($categories as &$category) {
     foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
@@ -144,15 +146,15 @@ function write_syndication($output,
                       $marginalised_voice_term->name,
                       $syndication['ID'],
                       $syndication['post_title'],
-                      $media_type . '>>>',
+                      $media_type,
                       $outlet['ID'],
                       $outlet['post_title'],
                       $outlet_pod->field('geographic'),
                       $outlet_pod->field('reach'),
                       $syndication_pod->field('advertising_value_equivalent'),
                       $syndication_pod->field('impact')
-
-                      ), $delim);
+                      ),
+                $delim);
 
       }
     }
