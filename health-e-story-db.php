@@ -26,7 +26,7 @@ function story_metadata_page() {
   </div>
   <?php
 
-}
+     }
 
 add_action('wp','health_e_metadata_export_template_redirect', 0);
 
@@ -73,20 +73,6 @@ function health_e_metadata_export_template_redirect() {
 
       foreach ($post_pods as &$post_pod) {
 
-        $print_syndications = $post_pod->field('print_syndications');
-        $online_syndications = $post_pod->field('online_syndications');
-        $radio_syndications = $post_pod->field('radio_syndications');
-        $tv_syndications = $post_pod->field('tv_syndications');
-
-        $syndications = array_merge($print_syndications ? $print_syndications : array(),
-                                    $online_syndications ? $online_syndications : array(),
-                                    $radio_syndications ? $radio_syndications : array(),
-                                    $tv_syndications ? $tv_syndications : array());
-
-        // If there are no syndications, just fake one with StdClass to output
-        // whatever data we have for the story.
-        $syndications = $syndications ? $syndications : array(array());
-
         $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
         $marginalised_voice_terms = $marginalised_voice_terms ? $marginalised_voice_terms : array(new StdClass);
         $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
@@ -94,65 +80,81 @@ function health_e_metadata_export_template_redirect() {
         $categories = get_the_category($post_pod->field('ID'));
         $categories = $categories ? $categories : array(new StdClass);
 
-        foreach ($categories as &$category) {
-          foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
-            foreach ($author_terms as &$author_term) {
-              foreach ($syndications as &$syndication) {
-                $syndication_pod = pods('print_syndication', $syndication["ID"], true);
-                $outlet = $syndication_pod->field('outlet');
-                switch ($syndication_pod->pod) {
-                case 'print_syndication':
-                  $media_type = 'print';
-                  $outlet_pod_name = 'print_publisher';
-                  break;
-                case 'online_syndication':
-                  $media_type = 'online';
-                  $outlet_pod_name = 'online_publisher';
-                  break;
-                case 'radio_syndication':
-                  $media_type = 'radio';
-                  $outlet_pod_name = 'radio_broadcaster';
-                  break;
-                case 'tv_syndication':
-                  $media_type = 'tv';
-                  $outlet_pod_name = 'tv_broadcaster';
-                  break;
-                case NULL:
-                  $media_type = 'healthe_only';
-                  $outlet_pod_name = NULL;
-                  break;
-                default:
-                  $media_type = '';
-                  $outlet_pod_name = NULL;
-                  break;
-                }
-                $outlet_pod = pods($outlet_pod_name, $publisher["ID"], true);
+        $print_syndications = array_or_dummy($post_pod->field('print_syndications'), array());
+        $online_syndications = array_or_dummy($post_pod->field('online_syndications'), array());
+        $radio_syndications = array_or_dummy($post_pod->field('radio_syndications'), array());
+        $tv_syndications = array_or_dummy($post_pod->field('tv_syndications'), array());
 
-                fputcsv($output,
-                        array($post_pod->field('ID'),
-                              $post_pod->field('title'),
-                              $post_pod->field('date'),
-                              get_user_by('login', $author_term->name)->data->display_name,
-                              $category->name,
-                              $marginalised_voice_term->name,
-                              $syndication['ID'],
-                              $syndication['post_title'],
-                              $media_type . '>>>',
-                              $outlet['ID'],
-                              $outlet['post_title'],
-                              $outlet_pod->field('geographic'),
-                              $outlet_pod->field('reach'),
-                              $syndication_pod->field('advertising_value_equivalent'),
-                              $syndication_pod->field('impact')
+        if (!($print_syndications|$online_syndications|$radio_syndications|$tv_syndications)) {
+          $dummy_syndications = array(array());
+        }
 
-                              ), $delim);
+        $runs = array(array($print_syndications, 'print', '_publisher'),
+                      array($online_syndications, 'online', '_publisher'),
+                      array($radio_syndications, 'radio', '_broadcaster'),
+                      array($tv_syndications, 'tv', '_broadcaster'),
+                      array($dummy_syndications, 'health-e_only', '_dummy'));
 
-              }
-            }
+        foreach ($runs as &$run) {
+          foreach ($run[0] as &$syndication) {
+            write_syndication($output,
+                              $post_pod,
+                              $syndication
+                              $marginalised_voice_terms,
+                              $categories,
+                              $author_terms,
+                              $run[1],
+                              $run[2]
+                              );
           }
         }
       }
       exit();
+    }
+  }
+}
+
+function array_or_dummy($potential_array, $dummy) {
+  return $potential_array ? $potential_array : $dummy;
+}
+
+function write_syndication($output,
+                           $post_pod,
+                           $syndication,
+                           $marginalised_voice_terms,
+                           $categories,
+                           $author_terms,
+                           $media_type,
+                           $outlet_pod_name) {
+
+  $syndication_pod = pods($media_type . '_syndication', $syndication["ID"], true);
+  $outlet = $syndication_pod->field('outlet');
+  $outlet_pod = pods($media_type . $outlet_pod_name, $publisher["ID"], true);
+
+  foreach ($categories as &$category) {
+    foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
+      foreach ($author_terms as &$author_term) {
+
+        fputcsv($output,
+                array($post_pod->field('ID'),
+                      $post_pod->field('title'),
+                      $post_pod->field('date'),
+                      get_user_by('login', $author_term->name)->data->display_name,
+                      $category->name,
+                      $marginalised_voice_term->name,
+                      $syndication['ID'],
+                      $syndication['post_title'],
+                      $media_type . '>>>',
+                      $outlet['ID'],
+                      $outlet['post_title'],
+                      $outlet_pod->field('geographic'),
+                      $outlet_pod->field('reach'),
+                      $syndication_pod->field('advertising_value_equivalent'),
+                      $syndication_pod->field('impact')
+
+                      ), $delim);
+
+      }
     }
   }
 }
