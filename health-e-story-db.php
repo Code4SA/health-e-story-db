@@ -12,7 +12,7 @@ add_action( 'admin_menu', 'my_plugin_menu' );
 
 /** Step 1. */
 function my_plugin_menu() {
-  add_management_page( 'Health-e Story Metadata Export', 'Story Metadata Export', 'export', 'health-e-story-metadata', 'story_metadata_page' );
+  add_management_page( 'Health-e Story Syndication Export', 'Story Syndication Export', 'export', 'health-e-story-metadata', 'story_metadata_page' );
 }
 
 /** Step 3. */
@@ -21,8 +21,13 @@ function story_metadata_page() {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
   }
   ?>
-  <div class="wrap">
-     <p><a href="/health-e-story-db/Health-e_Story_DB.csv">Download</a></p>
+  <div>
+     <h1>Story Syndication Export</h1>
+     <p>Here you can download an export file of all the stories and where they've been syndicated.</p>
+     <a href="/health-e-story-db/Health-e_Story_DB.csv">
+       <button type="submit" style="height: 50px">Download Story Syndication Export</button>
+     </a>
+     <p>You can also <a href="#">download a manual</a> to explain the format of the data and some suggestions for how to analyse.
   </div>
   <?php
 
