@@ -74,7 +74,7 @@
           "type": "number",
           "class": "",
           "help": "",
-          "description": "",
+          "description": "The South African Advertising Research Foundation. The TAMS figures provide an insight into the number of people who watch to each television station in South Africa by day, hour and quarter hour. ",
           "label": "TAMS",
           "name": "tams",
           "id": 14639
@@ -132,7 +132,7 @@
           ],
           "unique": "0",
           "currency_repeatable": "0",
-          "sister_id": "14678",
+          "sister_id": "",
           "pick_val": "",
           "pick_object": "",
           "weight": 2,
@@ -169,7 +169,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "",
+          "sister_id": "14645",
           "pick_val": "tv_broadcaster",
           "pick_object": "post_type",
           "weight": 1,
@@ -206,7 +206,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14681",
+          "sister_id": "14670",
           "pick_val": "post",
           "pick_object": "post_type",
           "weight": 0,
@@ -301,10 +301,10 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "",
+          "sister_id": "14642",
           "pick_val": "tv_syndication",
           "pick_object": "post_type",
-          "weight": 3,
+          "weight": 2,
           "type": "pick",
           "class": "",
           "help": "",
@@ -312,35 +312,6 @@
           "label": "Syndications",
           "name": "syndications",
           "id": 14645
-        },
-        "media_form": {
-          "required": "0",
-          "text_allow_shortcode": "0",
-          "text_allow_html": "0",
-          "text_allowed_html_tags": "strong em a ul ol li b i",
-          "text_max_length": "255",
-          "default_value": "tv",
-          "admin_only": "0",
-          "restrict_role": "0",
-          "restrict_capability": "0",
-          "hidden": "1",
-          "read_only": "0",
-          "roles_allowed": [
-            "administrator"
-          ],
-          "unique": "0",
-          "text_repeatable": "0",
-          "sister_id": "",
-          "pick_val": "",
-          "pick_object": "",
-          "weight": 2,
-          "type": "text",
-          "class": "",
-          "help": "",
-          "description": "",
-          "label": "Media Form",
-          "name": "media_form",
-          "id": 14646
         },
         "reach": {
           "pick_groupby": "",
@@ -566,7 +537,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "",
+          "sister_id": "14656",
           "pick_val": "radio_broadcaster",
           "pick_object": "post_type",
           "weight": 1,
@@ -603,7 +574,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14703",
+          "sister_id": "14671",
           "pick_val": "post",
           "pick_object": "post_type",
           "weight": 0,
@@ -673,35 +644,6 @@
       "built_in_taxonomies_marginalised_voices": "0",
       "show_in_menu": "1",
       "fields": {
-        "media_form": {
-          "required": "0",
-          "text_allow_shortcode": "0",
-          "text_allow_html": "0",
-          "text_allowed_html_tags": "strong em a ul ol li b i",
-          "text_max_length": "255",
-          "default_value": "radio",
-          "admin_only": "0",
-          "restrict_role": "0",
-          "restrict_capability": "0",
-          "hidden": "1",
-          "read_only": "0",
-          "roles_allowed": [
-            "administrator"
-          ],
-          "unique": "0",
-          "text_repeatable": "0",
-          "sister_id": "",
-          "pick_val": "",
-          "pick_object": "",
-          "weight": 3,
-          "type": "text",
-          "class": "",
-          "help": "",
-          "description": "",
-          "label": "Media Form",
-          "name": "media_form",
-          "id": 14655
-        },
         "syndications": {
           "pick_groupby": "",
           "pick_orderby": "",
@@ -727,7 +669,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14664",
+          "sister_id": "14652",
           "pick_val": "radio_syndication",
           "pick_object": "post_type",
           "weight": 2,
@@ -963,7 +905,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "",
+          "sister_id": "14666",
           "pick_val": "print_publisher",
           "pick_object": "post_type",
           "weight": 1,
@@ -1070,34 +1012,36 @@
       "built_in_taxonomies_marginalised_voices": "0",
       "show_in_menu": "1",
       "fields": {
-        "media_form": {
-          "required": "0",
-          "text_allow_shortcode": "0",
-          "text_allow_html": "0",
-          "text_allowed_html_tags": "strong em a ul ol li b i",
-          "text_max_length": "255",
-          "default_value": "print",
-          "admin_only": "0",
-          "restrict_role": "0",
-          "restrict_capability": "0",
-          "hidden": "1",
-          "read_only": "0",
+        "circulation": {
+          "number_repeatable": "0",
+          "unique": "0",
           "roles_allowed": [
             "administrator"
           ],
-          "unique": "0",
-          "text_repeatable": "0",
+          "read_only": "0",
+          "hidden": "0",
+          "restrict_capability": "0",
+          "restrict_role": "0",
+          "admin_only": "0",
+          "number_max_length": "12",
+          "number_max": "100",
+          "number_min": "0",
+          "number_step": "1",
+          "number_decimals": "0",
+          "number_format": "i18n",
+          "number_format_type": "number",
+          "required": "0",
           "sister_id": "",
           "pick_val": "",
           "pick_object": "",
           "weight": 3,
-          "type": "text",
+          "type": "number",
           "class": "",
           "help": "",
           "description": "",
-          "label": "Media Form",
-          "name": "media_form",
-          "id": 14665
+          "label": "Circulation",
+          "name": "circulation",
+          "id": 14698
         },
         "syndications": {
           "pick_groupby": "",
@@ -1124,7 +1068,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14674",
+          "sister_id": "14662",
           "pick_val": "print_syndication",
           "pick_object": "post_type",
           "weight": 2,
@@ -1223,8 +1167,7 @@
       "id": 14664
     },
     "14669": {
-      "built_in_taxonomies_marginalised_voices": "1",
-      "show_in_menu": "1",
+      "show_in_menu": 1,
       "fields": {
         "tv_syndications": {
           "pick_groupby": "",
@@ -1251,7 +1194,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14668",
+          "sister_id": "14643",
           "pick_val": "tv_syndication",
           "pick_object": "post_type",
           "weight": 3,
@@ -1288,7 +1231,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14663",
+          "sister_id": "14653",
           "pick_val": "radio_syndication",
           "pick_object": "post_type",
           "weight": 2,
@@ -1362,7 +1305,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14642",
+          "sister_id": "14679",
           "pick_val": "online_syndication",
           "pick_object": "post_type",
           "weight": 0,
@@ -1550,9 +1493,9 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14641",
-          "pick_val": "",
-          "pick_object": "",
+          "sister_id": "14681",
+          "pick_val": "online_publisher",
+          "pick_object": "post_type",
           "weight": 1,
           "type": "pick",
           "class": "",
@@ -1587,7 +1530,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "",
+          "sister_id": "14673",
           "pick_val": "post",
           "pick_object": "post_type",
           "weight": 0,
@@ -1657,35 +1600,6 @@
       "built_in_taxonomies_marginalised_voices": "0",
       "show_in_menu": "1",
       "fields": {
-        "media_form": {
-          "required": "0",
-          "text_allow_shortcode": "0",
-          "text_allow_html": "0",
-          "text_allowed_html_tags": "strong em a ul ol li b i",
-          "text_max_length": "255",
-          "default_value_parameter": "online",
-          "admin_only": "0",
-          "restrict_role": "0",
-          "restrict_capability": "0",
-          "hidden": "1",
-          "read_only": "0",
-          "roles_allowed": [
-            "administrator"
-          ],
-          "unique": "0",
-          "text_repeatable": "0",
-          "sister_id": "",
-          "pick_val": "",
-          "pick_object": "",
-          "weight": 3,
-          "type": "text",
-          "class": "",
-          "help": "",
-          "description": "",
-          "label": "Media Form",
-          "name": "media_form",
-          "id": 14683
-        },
         "syndications": {
           "pick_groupby": "",
           "pick_orderby": "",
@@ -1711,7 +1625,7 @@
             "administrator"
           ],
           "unique": "0",
-          "sister_id": "14643",
+          "sister_id": "14678",
           "pick_val": "online_syndication",
           "pick_object": "post_type",
           "weight": 2,
@@ -1861,7 +1775,7 @@
     }
   },
   "meta": {
-    "build": 1458212938,
+    "build": 1458642833,
     "version": "2.6.1"
   }
 }

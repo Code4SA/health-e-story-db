@@ -52,14 +52,8 @@ function health_e_metadata_export_template_redirect() {
                     'syndication_id',
                     'syndication_name',
                     'media_form',
-                    'print_publisher_id',
-                    'print_publisher_name',
-                    'online_publisher_id',
-                    'online_publisher_name',
-                    'radio_broadcaster_id',
-                    'radio_broadcaster_name',
-                    'tv_broadcaster_id',
-                    'tv_broadcaster_name',
+                    'outlet_id',
+                    'outlet_name',
                     'geographic',
                     'reach',
                     'advertising_value_equivalent',
@@ -145,9 +139,9 @@ function write_syndication($output,
     break;
   }
 
-  $syndication_pod = pods($syndication_pod_name, $syndication["ID"], true) ?: pods();
+  $syndication_pod = pods($syndication_pod_name, $syndication["ID"], false);
   $outlet = $syndication_pod->field('outlet');
-  $outlet_pod = pods($outlet_pod_name, $publisher["ID"], true) ?: pods();
+  $outlet_pod = pods($outlet_pod_name, $outlet["ID"], false);
 
   foreach ($categories as &$category) {
     foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
@@ -168,7 +162,9 @@ function write_syndication($output,
                       $outlet_pod->field('geographic'),
                       $outlet_pod->field('reach'),
                       $syndication_pod->field('advertising_value_equivalent'),
-                      $syndication_pod->field('impact')
+                      $syndication_pod->field('impact'),
+                      $outlet_pod->field('circulation', true) ?: '',
+                      $syndication_pod->field('tams', true)
                       ),
                 $delim);
 
