@@ -197,8 +197,7 @@ add_action( 'pods_meta_meta_post_online_syndications', 'post_edit_form_tag', 10,
 
 
 function post_edit_form_tag($post, $field, $pod) {
-  //
-  echo '<tr><td>DEADBEEF_' . $field['name'] . '</td></tr>';
+  echo '<!-- insert custom inputs here -->';
 }
 
 ?>
