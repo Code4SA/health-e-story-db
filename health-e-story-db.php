@@ -91,47 +91,59 @@ function health_e_metadata_export_template_redirect() {
                     'tams'
                     ), $delim);
 
-      $post_pods = array(pods('post', 13149, true),
-                         pods('post', 14344, true));
-
-      foreach ($post_pods as &$post_pod) {
-
-        $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
-        $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
-        $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
-        $author_terms = $author_terms ?: array(new StdClass);
-        $categories = get_the_category($post_pod->field('ID'));
-        $categories = $categories ?: array(new StdClass);
-
-        $print_syndications = $post_pod->field('print_syndications') ?: array();
-        $online_syndications = $post_pod->field('online_syndications') ?: array();
-        $radio_syndications = $post_pod->field('radio_syndications') ?: array();
-        $tv_syndications = $post_pod->field('tv_syndications') ?: array();
-
-
-        if (!($print_syndications||$online_syndications||$radio_syndications||$tv_syndications)) {
-          $dummy_syndications = array(array());
-        } else {
-          $dummy_syndications = array();
-        }
-
-        $syndications = array_merge($print_syndications,
-                                    $online_syndications,
-                                    $radio_syndications,
-                                    $tv_syndications,
-                                    $dummy_syndications);
-
-        foreach ($syndications as &$syndication) {
-          write_syndication($output,
-                            $delim,
-                            $post_pod,
-                            $syndication,
-                            $marginalised_voice_terms,
-                            $categories,
-                            $author_terms
+      $pagenum = 0;
+      do {
+        $query_args = array('post_type' => 'post',
+                            'posts_per_page' => 1,
+                            'paged' => $pagenum++
                             );
+        $query = new WP_Query($query_args);
+        if( $query->have_posts() ) {
+          while ($query->have_posts()) {
+            $query->the_post();
+
+            $post_pod = pods('post', get_post()->ID, true);
+            $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
+            $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
+            $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
+            $author_terms = $author_terms ?: array(new StdClass);
+            $categories = get_the_category($post_pod->field('ID'));
+            $categories = $categories ?: array(new StdClass);
+
+            $print_syndications = $post_pod->field('print_syndications') ?: array();
+            $online_syndications = $post_pod->field('online_syndications') ?: array();
+            $radio_syndications = $post_pod->field('radio_syndications') ?: array();
+            $tv_syndications = $post_pod->field('tv_syndications') ?: array();
+
+
+            if (!($print_syndications||$online_syndications||$radio_syndications||$tv_syndications)) {
+              $dummy_syndications = array(array());
+            } else {
+              $dummy_syndications = array();
+            }
+
+            $syndications = array_merge($print_syndications,
+                                        $online_syndications,
+                                        $radio_syndications,
+                                        $tv_syndications,
+                                        $dummy_syndications);
+
+            foreach ($syndications as &$syndication) {
+              write_syndication($output,
+                                $delim,
+                                $post_pod,
+                                $syndication,
+                                $marginalised_voice_terms,
+                                $categories,
+                                $author_terms
+                                );
+            }
+          }
         }
-      }
+
+      } while ($pagenum < $query->max_num_pages);
+
+      wp_reset_query();  // Restore global post data stomped by the_post().
       exit();
     }
   }
