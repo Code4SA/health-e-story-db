@@ -1,4 +1,4 @@
-import("debug");
+<?php
 
 add_action('wp','healthe_syndication_dataset_download', 0);
 
@@ -156,3 +156,4 @@ function write_syndication($output,
     }
   }
 }
+?>

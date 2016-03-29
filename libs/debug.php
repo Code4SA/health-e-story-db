@@ -1,3 +1,4 @@
+<?php
 function debug($val) {
   ob_start();
   var_dump($val);
@@ -6,3 +7,4 @@ function debug($val) {
   echo  $result ;
   echo "=========================\n";
 }
+?>

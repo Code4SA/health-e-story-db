@@ -1,7 +1,6 @@
-import("debug");
+<?php
 
 add_action( 'admin_menu', 'healthe_syndication_menu_item' );
-
 
 function healthe_syndication_menu_item() {
   add_management_page( 'Health-e Story Syndication Export',
@@ -43,11 +42,12 @@ function syndication_menu_page() {
       <p><input type="submit" value="Import" name="submit"></p>
     </form>
   </div><!-- ' -->
-  <?php
-  if(isset($_POST["submit"])) {
-    $data = file_get_contents($_FILES["csv-file"]["tmp_name"]);
-    $api = pods_api($_POST["pod-name"]);
-    $imported = $api->import( $data, true, 'csv' );
-    echo '<p>Imported ' . count($imported) . ' items.</p>';
-  }
+     <?php
+     if(isset($_POST["submit"])) {
+       $data = file_get_contents($_FILES["csv-file"]["tmp_name"]);
+       $api = pods_api($_POST["pod-name"]);
+       $imported = $api->import( $data, true, 'csv' );
+       echo '<p>Imported ' . count($imported) . ' items.</p>';
+     }
 }
+?>
