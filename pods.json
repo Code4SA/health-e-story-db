@@ -152,7 +152,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
-          "required": "0",
+          "required": "1",
           "pick_format_type": "single",
           "pick_format_single": "autocomplete",
           "pick_format_multi": "checkbox",
@@ -189,7 +189,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
-          "required": "0",
+          "required": "1",
           "pick_format_type": "single",
           "pick_format_single": "autocomplete",
           "pick_format_multi": "checkbox",
@@ -520,7 +520,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
-          "required": "0",
+          "required": "1",
           "pick_format_type": "single",
           "pick_format_single": "autocomplete",
           "pick_format_multi": "checkbox",
@@ -557,7 +557,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
-          "required": "0",
+          "required": "1",
           "pick_format_type": "single",
           "pick_format_single": "autocomplete",
           "pick_format_multi": "checkbox",
@@ -592,7 +592,7 @@
       "storage": "meta",
       "type": "post_type",
       "description": "",
-      "label": "Radio Syndication",
+      "label": "Radio Syndications",
       "name": "radio_syndication",
       "id": 14649
     },
@@ -888,7 +888,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
-          "required": "0",
+          "required": "1",
           "pick_format_type": "single",
           "pick_format_single": "autocomplete",
           "pick_format_multi": "checkbox",
@@ -925,7 +925,7 @@
           "pick_table_index": "",
           "pick_table_id": "",
           "pick_select_text": "",
-          "required": "0",
+          "required": "1",
           "pick_format_type": "single",
           "pick_format_single": "autocomplete",
           "pick_format_multi": "checkbox",
@@ -1162,7 +1162,7 @@
       "storage": "meta",
       "type": "post_type",
       "description": "",
-      "label": "Print Publisher",
+      "label": "Print Publishers",
       "name": "print_publisher",
       "id": 14664
     },
@@ -1775,7 +1775,7 @@
     }
   },
   "meta": {
-    "build": 1458642833,
+    "build": 1459241182,
     "version": "2.6.1"
   }
 }
