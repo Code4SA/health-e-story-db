@@ -19,6 +19,6 @@ Requirements:
 
 Import:
 
-1. Import pods
-2. Import Outlets
-3. Import Syndications
+1. Import pods by pasting pods.json into the Pods migration import page
+2. Import Outlets by importing outlet CSVs via the WP All Import plugin
+3. Import Syndications using the Health-e Story DB export/import page under Tools
