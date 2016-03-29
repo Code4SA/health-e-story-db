@@ -6,7 +6,9 @@ Requirements:
 
 - Pods
 
-1) Install and activate this plugin (Health-e Story DB)
+Install:
+
+1. Install and activate this plugin (Health-e Story DB)
 
 ## Import historic data
 
@@ -17,6 +19,6 @@ Requirements:
 
 Import:
 
-1) Import pods
-2) Import Outlets
-3) Import Syndications
+1. Import pods
+2. Import Outlets
+3. Import Syndications
