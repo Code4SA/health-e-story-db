@@ -21,7 +21,7 @@ function healthe_syndication_menu_page() {
      <a href="/health-e-story-db/Health-e_Story_DB.csv">
        <button type="submit" style="height: 50px">Download Story Syndication Export</button>
      </a>
-     <p>You can also <a href="#">download a manual</a> to explain the format of the data and some suggestions for how to analyse.
+     <p>You can also <a href="/wp-content/plugins/story-db/ExportDataManual.pdf" target="_blank">download a manual</a> to explain the format of the data and some suggestions for how to analyse.
   </div>
   <div style="border: 3px solid white; padding: 10px; margin: 5px">
     <h2>Import</p>
