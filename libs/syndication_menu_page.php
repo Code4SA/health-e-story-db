@@ -7,10 +7,10 @@ function healthe_syndication_menu_item() {
                        'Story Syndication Export',
                        'export',
                        'health-e-story-metadata',
-                       'syndication_menu_page' );
+                       'healthe_syndication_menu_page' );
 }
 
-function syndication_menu_page() {
+function healthe_syndication_menu_page() {
   if ( !current_user_can( 'export' ) )  {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
   }
