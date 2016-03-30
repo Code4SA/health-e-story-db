@@ -3,10 +3,10 @@
 add_action('wp','healthe_syndication_dataset_download', 0);
 
 function healthe_syndication_dataset_download() {
-  if (!current_user_can( 'export' ) ) {
-    wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-  } else {
-    if ($_SERVER['REQUEST_URI']=='/health-e-story-db/Health-e_Story_DB.csv') {
+  if ($_SERVER['REQUEST_URI']=='/health-e-story-db/Health-e_Story_DB.csv') {
+    if (!current_user_can( 'export' ) ) {
+      wp_die( __( 'FFFFF You do not have sufficient permissions to access this page.' ) );
+    } else {
       header("Content-type: application/x-msdownload", true, 200);
       header("Content-Disposition: attachment; filename=Health-e_Story_DB.csv");
       header("Pragma: no-cache");
@@ -145,7 +145,7 @@ function write_syndication($output,
                       $outlet['post_title'],
                       $outlet_pod->field('geographic'),
                       $outlet_pod->field('reach'),
-                      $syndication_pod->field('advertising_value_equivalent'),
+                      $syndication_pod->field('advertising_value_equivalent') ?: '',
                       $syndication_pod->field('impact'),
                       $outlet_pod->field('circulation', true) ?: '',
                       $syndication_pod->field('tams', true)
