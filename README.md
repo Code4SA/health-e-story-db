@@ -16,6 +16,7 @@ Requirements:
 
 - Health-e Story DB
 - WP All Import
+- WP All Export
 
 Import:
 
