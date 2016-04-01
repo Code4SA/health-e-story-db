@@ -44,10 +44,14 @@ function healthe_syndication_menu_page() {
   </div><!-- ' -->
      <?php
      if(isset($_POST["submit"])) {
-       $data = file_get_contents($_FILES["csv-file"]["tmp_name"]);
-       $api = pods_api($_POST["pod-name"]);
-       $imported = $api->import( $data, true, 'csv' );
-       echo '<p>Imported ' . count($imported) . ' items.</p>';
+       if (!current_user_can( 'import' ) ) {
+         wp_die( __( 'FFFFF You do not have sufficient permissions to import.' ) );
+       } else {
+         $data = file_get_contents($_FILES["csv-file"]["tmp_name"]);
+         $api = pods_api($_POST["pod-name"]);
+         $imported = $api->import( $data, true, 'csv' );
+         echo '<p>Imported ' . count($imported) . ' items.</p>';
+       }
      }
 }
 ?>
