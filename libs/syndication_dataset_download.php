@@ -5,7 +5,7 @@ add_action('wp','healthe_syndication_dataset_download', 0);
 function healthe_syndication_dataset_download() {
   if ($_SERVER['REQUEST_URI']=='/health-e-story-db/Health-e_Story_DB.csv') {
     if (!current_user_can( 'export' ) ) {
-      wp_die( __( 'FFFFF You do not have sufficient permissions to access this page.' ) );
+      wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     } else {
       header("Content-type: application/x-msdownload", true, 200);
       header("Content-Disposition: attachment; filename=Health-e_Story_DB.csv");
