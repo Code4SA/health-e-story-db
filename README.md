@@ -23,7 +23,7 @@ Requirements:
 
 Import:
 
-1. Import pods using (Pods Deploy)[http://pods.io/tutorials/pods-deployment-best-practices/] according to best practises
+1. Import pods using [Pods Deploy](http://pods.io/tutorials/pods-deployment-best-practices/) according to best practises
 
  - Failing that, by pasting pods.json into the Pods migration import page and manually setting up bi-directional relationships again (pods packages don't set those up automatically)
 
