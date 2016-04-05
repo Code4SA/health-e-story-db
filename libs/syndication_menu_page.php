@@ -24,7 +24,17 @@ function healthe_syndication_menu_page() {
      <p>You can also <a href="/wp-content/plugins/story-db/ExportDataManual.pdf" target="_blank">download a manual</a> to explain the format of the data and some suggestions for how to analyse.
   </div>
   <div style="border: 3px solid white; padding: 10px; margin: 5px">
-    <h2>Import</p>
+    <h2>Import (advanced)</h2>
+    <p>Format for import Comma Separated Variable file:</p>
+    <p>The first row shows the necessary table headings, the second row shows example values. All rows must have post_status as "publish".</p>
+    <style>
+       table, th, td {border: 1px solid #999999}
+    </style>
+    <table>
+     <tr><th>post</th><th>post_title</th><th>outlet</th><th>post_status</th></tr>
+     <tr><td>10274</td><td>"mnet: Older women who quit smoking cut heart"</td><td>14696</td><td>publish</td></tr>
+
+    </table>
     <form action="" method="post" enctype="multipart/form-data">
       <p>
         <label for="pod-name">Select item to import</label>
