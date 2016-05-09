@@ -88,7 +88,7 @@ function healthe_write_post($output, $delim, $post_pod) {
                               $tv_syndications,
                               $dummy_syndications);
 
-  foreach ($syndications as &$syndication) {
+  foreach ($syndications as $syndication) {
     healthe_write_syndication($output,
                               $delim,
                               $post_pod,
@@ -114,9 +114,9 @@ function healthe_write_syndication($output,
   $outlet = $syndication_pod->field('outlet');
   $outlet_pod = pods($outlet_pod_name, $outlet["ID"], false);
 
-  foreach ($categories as &$category) {
-    foreach ($marginalised_voice_terms as &$marginalised_voice_term) {
-      foreach ($author_terms as &$author_term) {
+  foreach ($categories as $category) {
+    foreach ($marginalised_voice_terms as $marginalised_voice_term) {
+      foreach ($author_terms as $author_term) {
 
         fputcsv($output,
                 array($post_pod->field('ID'),
