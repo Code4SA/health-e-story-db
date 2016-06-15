@@ -21,6 +21,7 @@ function healthe_syndication_dataset_download() {
                           'fields' => 'ids'
                           );
       $query = new WP_Query($query_args);
+      // copy posts array to ensure index isn't an issue for foreach
       $ids = $query->posts;
       foreach($ids as $id) {
         $post_pod = pods('post', $id, true);
