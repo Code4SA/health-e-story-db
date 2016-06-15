@@ -15,26 +15,41 @@ function healthe_syndication_dataset_download() {
       $output = fopen('php://output', 'w');
       $delim = ",";
       healthe_write_header($output, $delim);
-
+      $post_ids = array();
       $pagenum = 0;
+      fwrite($output, 'start\n');
+      for ($i = 0; $i < 5000; $i++) {
+        array_push($post_ids, $i);
+      }
+      fwrite($output, 'finish\n');
+
       do {
         $query_args = array('post_type' => 'post',
-                            'posts_per_page' => 1,
-                            'paged' => $pagenum++
+                            'posts_per_page' => 100,
+                            'paged' => $pagenum++,
+                            'fields' => array('id')
                             );
         $query = new WP_Query($query_args);
         if( $query->have_posts() ) {
           while ($query->have_posts()) {
             $query->the_post();
-
-            $post_pod = pods('post', get_post()->ID, true);
-            healthe_write_post($output, $delim, $post_pod);
+            fwrite($output, "unique pod_id count " . count($post_ids) . "\n");
+            array_push($post_ids, the_ID());
           }
         }
 
       } while ($pagenum < $query->max_num_pages);
 
       wp_reset_query();  // Restore global post data stomped by the_post().
+      fwrite($output, "pod_id count " . count($post_ids) . "\n");
+      $post_ids = array_unique($post_ids);
+      fwrite($output, "unique pod_id count " . count($post_ids) . "\n");
+
+      foreach($post_ids as $post_id) {
+        $post_pod = pods('post', $post_id, true);
+        fwrite($output, "pod_id " . $post_id . "\n");
+        healthe_write_post($output, $delim, $post_pod);
+      }
       exit();
     }
   }
@@ -66,6 +81,7 @@ function healthe_write_post($output, $delim, $post_pod) {
   $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
   $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
   $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
+  fwrite($output, "author_terms " . count($author_terms) . "\n");
   $author_terms = $author_terms ?: array(new StdClass);
   $categories = get_the_category($post_pod->field('ID'));
   $categories = $categories ?: array(new StdClass);
