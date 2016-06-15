@@ -22,11 +22,10 @@ function healthe_syndication_dataset_download() {
                           );
       $query = new WP_Query($query_args);
       $ids = $query->posts;
-      fwrite($output, "post ids: " . count($query->posts) . "\n");
       foreach($ids as $id) {
-        fwrite($output, "FEEBDAED\n");
         $post_pod = pods('post', $id, true);
         healthe_write_post($output, $delim, $post_pod);
+        wp_cache_flush();
       }
 
       exit();
@@ -57,7 +56,6 @@ function healthe_write_header($output, $delim) {
 }
 
 function healthe_write_post($output, $delim, $post_pod) {
-  fwrite($output, "DEADBEEF\n");
   $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
   $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
   $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
