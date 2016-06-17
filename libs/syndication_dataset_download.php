@@ -16,25 +16,19 @@ function healthe_syndication_dataset_download() {
       $delim = ",";
       healthe_write_header($output, $delim);
 
-      $pagenum = 0;
-      do {
-        $query_args = array('post_type' => 'post',
-                            'posts_per_page' => 1,
-                            'paged' => $pagenum++
-                            );
-        $query = new WP_Query($query_args);
-        if( $query->have_posts() ) {
-          while ($query->have_posts()) {
-            $query->the_post();
+      $query_args = array('post_type' => 'post',
+                          'posts_per_page' => -1,
+                          'fields' => 'ids'
+                          );
+      $query = new WP_Query($query_args);
+      // copy posts array to ensure index isn't an issue for foreach
+      $ids = $query->posts;
+      foreach($ids as $id) {
+        $post_pod = pods('post', $id, true);
+        healthe_write_post($output, $delim, $post_pod);
+        wp_cache_flush();
+      }
 
-            $post_pod = pods('post', get_post()->ID, true);
-            healthe_write_post($output, $delim, $post_pod);
-          }
-        }
-
-      } while ($pagenum < $query->max_num_pages);
-
-      wp_reset_query();  // Restore global post data stomped by the_post().
       exit();
     }
   }
