@@ -3,16 +3,17 @@
 add_action( 'admin_menu', 'healthe_syndication_menu_item' );
 
 function healthe_syndication_menu_item() {
-  add_management_page( 'Health-e Story Syndication Export',
+  $hook = add_management_page( 'Health-e Story Syndication Export',
                        'Story Syndication Export',
-                       'export',
+                       'import',
                        'health-e-story-metadata',
                        'healthe_syndication_menu_page' );
+  add_action( "load-$hook", 'admin_page_load' );
 }
 
 function healthe_syndication_menu_page() {
   if ( !current_user_can( 'export' ) )  {
-    wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+    wp_die( __( 'You do not have sufficient permissions to access this page.-' ) );
   }
   ?>
   <div style="border: 3px solid white; padding: 10px; margin: 5px">
