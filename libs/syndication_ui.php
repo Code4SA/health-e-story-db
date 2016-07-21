@@ -56,7 +56,8 @@ function healthe_post_syndication($post, $field, $pod, $medium) {
 
 function healthe_post_syndication_post($post, $field, $pod, $medium) {
   if ($post-ID && $pod->id) {
-    $syndication_pod = pods( $medium . '_syndication' );
+    $type = $medium . '_syndication';
+    $syndication_pod = pods( $type );
     $params = array( 'fields_only' => true,
                      'fields' => array('outlet', 'post_title')
                      );
@@ -96,13 +97,38 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
        formCancelButton.on('click', function() { formContainer.hide(); });
        jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
        newButton.after(formContainer);
+       var startSpinner = function() {
+         console.log("start spinned");
+       }
+       var stopSpinner = function() {
+         console.log("stop spinner");
+       }
        var createSyndication = function() {
          var data = {
            "title": syndicationTitleField.val(),
-           "outlet": outletField.val(),
-           "post": postID
+           "outlet": parseInt(outletField.val()),
+           "post": parseInt(postID)
          };
          console.log(fieldName, data);
+         startSpinner();
+         jQuery.ajax({
+           type: "post",
+           url: "/wp-json/wp/v2/<?php echo $type; ?>",
+           dataType: "json",
+           data: data,
+           beforeSend: function(xhr) {
+               xhr.setRequestHeader('X-WP-Nonce', '<?php print wp_create_nonce('wp_rest') ?>')
+             }
+           })
+         .done(function(response, textStatus) {
+             console.log("success", textStatus, response);
+           })
+         .fail(function(response, textStatus) {
+             console.log(textStatus, response);
+           })
+         .always(function() {
+             stopSpinner();
+           });
          syndicationTitleField.val('');
        };
        createButton.on('click', createSyndication);
