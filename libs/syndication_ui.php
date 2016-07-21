@@ -66,28 +66,40 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
 <?php
   echo $form;
 ?>
-  <div id="<?php print($container_id) . '-create'; ?>" class="healthe-syndication-btn">Create</div>
-  <div id="<?php print($container_id) . '-cancel'; ?>" class="healthe-syndication-btn">Cancel</div>
+  <div id="<?php print($container_id) . '-create'; ?>" class="button">Create</div>
+  <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
   </div>
   <script>
       (function () {
      var fieldName = "<?php print($field['name']); ?>";
-     var newButton = jQuery('<div class="healthe-syndication-btn">New</div>');
+     var newButton = jQuery('<div class="button">New</div>');
      var formContainer = jQuery('#<?php print($container_id); ?>');
      var formCancelButton = jQuery('#<?php print($container_id) . '-cancel'; ?>');
      var createButton = jQuery('#<?php print($container_id) . '-create'; ?>');
-     newButton.on('click', function() { formContainer.show(); });
+     var postTitleField = jQuery('#post-body input[name="post_title"]');
+     var syndicationTitleField = jQuery('#<?php print($container_id); ?> input[name="post_title"]');
+     var outletField = jQuery('#<?php print($container_id); ?> input[name="outlet"]');
+     var postID = "<?php the_ID() ?>";
+
+     syndicationTitleField.attr('disabled', 'true');
+     var updateSyndicationTitle = function() {
+       var outletFieldUI = jQuery('#s2id_pods-form-ui-outlet');
+       title = outletFieldUI.text().trim() + ": " + postTitleField.val();
+       syndicationTitleField.val(title);
+     };
+     outletField.change(updateSyndicationTitle);
+     newButton.on('click', function() {
+         updateSyndicationTitle();
+         formContainer.show();
+       });
      formCancelButton.on('click', function() { formContainer.hide(); });
      jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
      newButton.after(formContainer);
      var createSyndication = function() {
-       var title = jQuery('#<?php print($container_id); ?> input[name="post_title"]').val();
-       var outlet = jQuery('#<?php print($container_id); ?> input[name="outlet"]').val();
-       var post = "<?php the_ID() ?>";
        var data = {
-         "title": title,
-         "outlet": outlet,
-         "post": post
+         "title": syndicationTitleField.val(),
+         "outlet": outletField.val(),
+         "post": postID
        };
        console.log(fieldName, data);
      };
