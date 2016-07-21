@@ -55,12 +55,9 @@ function healthe_post_syndication($post, $field, $pod, $medium) {
 }
 
 function healthe_post_syndication_post($post, $field, $pod, $medium) {
-  echo "<pre>\n";
-  echo "post\n";
-  echo "</pre>\n";
   $pod = pods( $medium . '_syndication' );
   $params = array( 'fields_only' => true,
-                   'fields' => array('post_title', 'post', 'outlet')
+                   'fields' => array('post_title', 'outlet')
                    );
   $form = $pod->form($params);
   $container_id = "healthe-new-" . $field['name'] . "-form";
@@ -69,22 +66,38 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
 <?php
   echo $form;
 ?>
-  <div id="<?php print($container_id) . '-cancel'; ?>">Cancel</div>
+  <div id="<?php print($container_id) . '-create'; ?>" class="healthe-syndication-btn">Create</div>
+  <div id="<?php print($container_id) . '-cancel'; ?>" class="healthe-syndication-btn">Cancel</div>
   </div>
   <script>
       (function () {
-     var field_name = "<?php print($field['name']); ?>";
-     var newButton = jQuery('<div class="new-syndication-button">New</div>');
+     var fieldName = "<?php print($field['name']); ?>";
+     var newButton = jQuery('<div class="healthe-syndication-btn">New</div>');
      var formContainer = jQuery('#<?php print($container_id); ?>');
      var formCancelButton = jQuery('#<?php print($container_id) . '-cancel'; ?>');
+     var createButton = jQuery('#<?php print($container_id) . '-create'; ?>');
      newButton.on('click', function() { formContainer.show(); });
      formCancelButton.on('click', function() { formContainer.hide(); });
-     jQuery('input[name="pods_meta_'+ field_name +'" ]').after(newButton);
+     jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
      newButton.after(formContainer);
-     console.log("stuff " + field_name);
+     var createSyndication = function() {
+       var title = jQuery('#<?php print($container_id); ?> input[name="post_title"]').val();
+       var outlet = jQuery('#<?php print($container_id); ?> input[name="outlet"]').val();
+       var post = "<?php the_ID() ?>";
+       var data = {
+         "title": title,
+         "outlet": outlet,
+         "post": post
+       };
+       console.log(fieldName, data);
+     };
+     createButton.on('click', createSyndication);
+     console.log("stuff " + fieldName);
   })();
   </script>
 <?php
-
+  echo "<pre>\n";
+  echo "post\n";
+  echo "</pre>\n";
 }
 ?>
