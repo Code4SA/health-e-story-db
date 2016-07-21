@@ -115,7 +115,8 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
            type: "post",
            url: "/wp-json/wp/v2/<?php echo $type; ?>",
            dataType: "json",
-           data: data,
+           contentType: "application/json",
+           data: JSON.stringify(data),
            beforeSend: function(xhr) {
                xhr.setRequestHeader('X-WP-Nonce', '<?php print wp_create_nonce('wp_rest') ?>')
              }
