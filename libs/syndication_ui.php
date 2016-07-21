@@ -55,59 +55,72 @@ function healthe_post_syndication($post, $field, $pod, $medium) {
 }
 
 function healthe_post_syndication_post($post, $field, $pod, $medium) {
-  $pod = pods( $medium . '_syndication' );
-  $params = array( 'fields_only' => true,
-                   'fields' => array('post_title', 'outlet')
-                   );
-  $form = $pod->form($params);
-  $container_id = "healthe-new-" . $field['name'] . "-form";
+  if ($post-ID && $pod->id) {
+    $syndication_pod = pods( $medium . '_syndication' );
+    $params = array( 'fields_only' => true,
+                     'fields' => array('outlet', 'post_title')
+                     );
+    $form = $syndication_pod->form($params);
+    $container_id = "healthe-new-" . $field['name'] . "-form";
 ?>
-  <div id="<?php print($container_id); ?>" class="healthe-new-syndication-form">
+    <div id="<?php print($container_id); ?>" class="healthe-new-syndication-form">
 <?php
-  echo $form;
+    echo $form;
 ?>
-  <div id="<?php print($container_id) . '-create'; ?>" class="button">Create</div>
-  <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
-  </div>
-  <script>
-      (function () {
-     var fieldName = "<?php print($field['name']); ?>";
-     var newButton = jQuery('<div class="button">New</div>');
-     var formContainer = jQuery('#<?php print($container_id); ?>');
-     var formCancelButton = jQuery('#<?php print($container_id) . '-cancel'; ?>');
-     var createButton = jQuery('#<?php print($container_id) . '-create'; ?>');
-     var postTitleField = jQuery('#post-body input[name="post_title"]');
-     var syndicationTitleField = jQuery('#<?php print($container_id); ?> input[name="post_title"]');
-     var outletField = jQuery('#<?php print($container_id); ?> input[name="outlet"]');
-     var postID = "<?php the_ID() ?>";
+    <div id="<?php print($container_id) . '-create'; ?>" class="button">Create</div>
+    <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
+    </div>
+    <script>
+        (function () {
+       var fieldName = "<?php print($field['name']); ?>";
+       var newButton = jQuery('<div class="button">New</div>');
+       var formContainer = jQuery('#<?php print($container_id); ?>');
+       var formCancelButton = jQuery('#<?php print($container_id) . '-cancel'; ?>');
+       var createButton = jQuery('#<?php print($container_id) . '-create'; ?>');
+       var postTitleField = jQuery('#post-body input[name="post_title"]');
+       var syndicationTitleField = jQuery('#<?php print($container_id); ?> input[name="post_title"]');
+       var outletField = jQuery('#<?php print($container_id); ?> input[name="outlet"]');
+       var postID = "<?php the_ID() ?>";
 
-     syndicationTitleField.attr('disabled', 'true');
-     var updateSyndicationTitle = function() {
-       var outletFieldUI = jQuery('#s2id_pods-form-ui-outlet');
-       title = outletFieldUI.text().trim() + ": " + postTitleField.val();
-       syndicationTitleField.val(title);
-     };
-     outletField.change(updateSyndicationTitle);
-     newButton.on('click', function() {
-         updateSyndicationTitle();
-         formContainer.show();
-       });
-     formCancelButton.on('click', function() { formContainer.hide(); });
-     jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
-     newButton.after(formContainer);
-     var createSyndication = function() {
-       var data = {
-         "title": syndicationTitleField.val(),
-         "outlet": outletField.val(),
-         "post": postID
+       syndicationTitleField.attr('disabled', 'true');
+       var updateSyndicationTitle = function() {
+         var outletFieldUI = jQuery('#s2id_pods-form-ui-outlet');
+         title = outletFieldUI.text().trim() + ": " + postTitleField.val();
+         syndicationTitleField.val(title);
        };
-       console.log(fieldName, data);
-     };
-     createButton.on('click', createSyndication);
-     console.log("stuff " + fieldName);
-  })();
-  </script>
+       outletField.change(updateSyndicationTitle);
+       newButton.on('click', function() {
+           updateSyndicationTitle();
+           formContainer.show();
+         });
+       formCancelButton.on('click', function() { formContainer.hide(); });
+       jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
+       newButton.after(formContainer);
+       var createSyndication = function() {
+         var data = {
+           "title": syndicationTitleField.val(),
+           "outlet": outletField.val(),
+           "post": postID
+         };
+         console.log(fieldName, data);
+         syndicationTitleField.val('');
+       };
+       createButton.on('click', createSyndication);
+       console.log("stuff " + fieldName);
+    })();
+    </script>
 <?php
+  } else {
+?>
+    <script>
+    (function () {
+      var fieldName = "<?php print($field['name']); ?>";
+      var newButton = jQuery('<div class="button disabled" title="You have to save a draft post or publish before you can add syndications for it.">New</div>');
+      jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
+    })();
+    </script>
+<?php
+  }
   echo "<pre>\n";
   echo "post\n";
   echo "</pre>\n";

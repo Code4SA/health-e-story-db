@@ -2,22 +2,6 @@
     display: none;
 }
 
-.healthe-syndication-btn {
-  -webkit-border-radius: 6;
-  -moz-border-radius: 6;
-  border-radius: 6px;
-  padding: 5px;
-  background: #d4d4d4;
-  text-decoration: none;
-  margin: 5px;
-  display: inline;
-}
-
-.healthe-syndication-btn:hover {
-  background: #b8b8b8;
-  text-decoration: none;
-}
-
 .healthe-new-syndication-form {
   -webkit-border-radius: 6;
   -moz-border-radius: 6;
