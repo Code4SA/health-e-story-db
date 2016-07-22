@@ -66,10 +66,10 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
 ?>
     <div id="<?php print($container_id); ?>" class="healthe-new-syndication-form">
 <?php
-    echo $form;
+       echo $form;
 ?>
-    <div id="<?php print($container_id) . '-create'; ?>" class="button">Create</div>
-    <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
+      <div id="<?php print($container_id) . '-create'; ?>" class="button">Create</div>
+      <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
     </div>
     <script>
         (function () {
@@ -84,18 +84,40 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
        var postID = "<?php the_ID() ?>";
 
        syndicationTitleField.attr('disabled', 'true');
+       /* Rename the form fields we don't actually want involved in the Post form */
+       jQuery('#<?php print($container_id); ?> input').each(function(i, el) {
+           var el = jQuery(el);
+           el.prop('name', fieldName + '_' + el.prop('name'));
+         });
+
        var updateSyndicationTitle = function() {
-         var outletFieldUI = jQuery('#s2id_pods-form-ui-outlet');
-         title = outletFieldUI.text().trim() + ": " + postTitleField.val();
+         var outletFieldUI = jQuery('#<?php print($container_id); ?> .pods-form-ui-field-name-outlet');
+         var title = outletFieldUI.text().trim() + ": " + postTitleField.val();
          syndicationTitleField.val(title);
        };
+       var checkSubmittable = function() {
+         if (outletField.val()) {
+           createButton.removeClass('disabled');
+         } else {
+           createButton.addClass('disabled');
+         }
+       }
+       checkSubmittable();
+       var showForm = function() {
+         formContainer.show();
+       }
+       var hideForm = function() {
+         formContainer.hide();
+       }
        outletField.change(updateSyndicationTitle);
+       outletField.change(checkSubmittable);
        newButton.on('click', function() {
            updateSyndicationTitle();
-           formContainer.show();
+           showForm();
          });
-       formCancelButton.on('click', function() { formContainer.hide(); });
-       jQuery('input[name="pods_meta_'+ fieldName +'" ]').after(newButton);
+       formCancelButton.on('click', function() { showForm(); });
+       var syndicationsInput = jQuery('input[name="pods_meta_'+ fieldName +'" ]');
+       syndicationsInput.after(newButton);
        newButton.after(formContainer);
        var startSpinner = function() {
          console.log("start spinned");
@@ -124,6 +146,21 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
            })
          .done(function(response, textStatus) {
              console.log("success", textStatus, response);
+             var syndicationList = jQuery('#s2id_pods-form-ui-pods-meta-<?php print($medium); ?>-syndications ul.select2-choices');
+             var fakeItem = jQuery("<li class=\"select2-search-choice\"><div>"
+                                   + data.title + "</div></li>");
+             syndicationList.append(fakeItem);
+             /* Add new syndication to post form so it doesn't try to remove
+                the post from the syndication we just created if someone
+                submits the current post form */
+             var syndications = syndicationsInput.val();
+             if (syndications) {
+               syndications += "," + response.id;
+             } else {
+               syndications = response.id;
+             }
+             syndicationsInput.val(syndications);
+             hideForm();
            })
          .fail(function(response, textStatus) {
              console.log(textStatus, response);
@@ -131,9 +168,14 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
          .always(function() {
              stopSpinner();
            });
+         // clear title so it's not confusing if creating another syndication.
          syndicationTitleField.val('');
        };
-       createButton.on('click', createSyndication);
+       createButton.on('click', function() {
+           if (!createButton.hasClass('disabled')) {
+             createSyndication();
+           }
+         });
        console.log("stuff " + fieldName);
     })();
     </script>
