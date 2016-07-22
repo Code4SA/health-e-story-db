@@ -105,9 +105,10 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
        }
        var createSyndication = function() {
          var data = {
-           "title": syndicationTitleField.val(),
-           "outlet": parseInt(outletField.val()),
-           "post": parseInt(postID)
+           title: syndicationTitleField.val(),
+           outlet: parseInt(outletField.val()),
+           post: parseInt(postID),
+           status: "publish"
          };
          console.log(fieldName, data);
          startSpinner();
