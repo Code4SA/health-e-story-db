@@ -72,6 +72,7 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
       <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
       <img src="/wp-content/plugins/health-e-story-db/images/Ajax-loader.gif"
            id="<?php print($container_id) . '-spinner'; ?>" class="healthe-spinner">
+      <div id="<?php print($container_id) . '-notice'; ?>" class="healthe-notice"></div>
     </div>
     <script>
         (function () {
@@ -80,6 +81,7 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
        var formContainer = jQuery('#<?php print($container_id); ?>');
        var formCancelButton = jQuery('#<?php print($container_id) . '-cancel'; ?>');
        var createButton = jQuery('#<?php print($container_id) . '-create'; ?>');
+       var noticeBox = jQuery('#<?php print($container_id) . '-notice'; ?>');
        var spinner = jQuery('#<?php print($container_id) . '-spinner'; ?>');
        var postTitleField = jQuery('#post-body input[name="post_title"]');
        var syndicationTitleField = jQuery('#<?php print($container_id); ?> input[name="post_title"]');
@@ -152,6 +154,9 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
          startSpinner();
          disableCreate();
          disableCancel();
+         noticeBox.html("");
+         noticeBox.removeClass('error');
+
          jQuery.ajax({
            type: "post",
            url: "/wp-json/wp/v2/<?php echo $type; ?>",
@@ -183,6 +188,9 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
            })
          .fail(function(response, textStatus) {
              console.log(textStatus, response);
+             noticeBox.html("An error occurred. It might be resolved by "
+                           + "reloading the page and trying again.");
+             noticeBox.addClass('error');
            })
          .always(function() {
              stopSpinner();

@@ -14,3 +14,13 @@
 .healthe-spinner {
   display: none;
 }
+
+.healthe-notice.error {
+  -webkit-border-radius: 6;
+  -moz-border-radius: 6;
+  border-radius: 6px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid red;
+  color: red;
+}
