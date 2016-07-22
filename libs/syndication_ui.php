@@ -45,13 +45,6 @@ function healthe_post_syndication_tv_post($post, $field, $pod) {
 }
 
 function healthe_post_syndication($post, $field, $pod, $medium) {
-  echo "<pre>\n";
-  echo "pod: $pod->id\n";
-  echo "post: $post->ID\n";
-  echo "medium: $medium\n";
-  echo "field type: " . $field['type'] . "\n";
-  echo "field type: " . $field['name'] . "\n";
-  echo "</pre>\n";
 }
 
 function healthe_post_syndication_post($post, $field, $pod, $medium) {
@@ -168,7 +161,7 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
              }
            })
          .done(function(response, textStatus) {
-             var syndicationList = jQuery('#s2id_pods-form-ui-pods-meta-<?php print($medium); ?>-syndications ul.select2-choices');
+             var syndicationList = jQuery('.pods-form-ui-field-name-pods-meta-<?php print($medium); ?>-syndications ul.select2-choices');
              var fakeItem = jQuery("<li class=\"select2-search-choice\"><div>"
                                    + data.title + "</div></li>");
              syndicationList.append(fakeItem);
@@ -203,7 +196,6 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
              createSyndication();
            }
          });
-       console.log("stuff " + fieldName);
     })();
     </script>
 <?php
@@ -218,8 +210,5 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
     </script>
 <?php
   }
-  echo "<pre>\n";
-  echo "post\n";
-  echo "</pre>\n";
 }
 ?>
