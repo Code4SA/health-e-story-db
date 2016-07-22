@@ -70,6 +70,8 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
 ?>
       <div id="<?php print($container_id) . '-create'; ?>" class="button">Create</div>
       <div id="<?php print($container_id) . '-cancel'; ?>" class="button">Cancel</div>
+      <img src="/wp-content/plugins/health-e-story-db/images/Ajax-loader.gif"
+           id="<?php print($container_id) . '-spinner'; ?>" class="healthe-spinner">
     </div>
     <script>
         (function () {
@@ -78,6 +80,7 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
        var formContainer = jQuery('#<?php print($container_id); ?>');
        var formCancelButton = jQuery('#<?php print($container_id) . '-cancel'; ?>');
        var createButton = jQuery('#<?php print($container_id) . '-create'; ?>');
+       var spinner = jQuery('#<?php print($container_id) . '-spinner'; ?>');
        var postTitleField = jQuery('#post-body input[name="post_title"]');
        var syndicationTitleField = jQuery('#<?php print($container_id); ?> input[name="post_title"]');
        var outletField = jQuery('#<?php print($container_id); ?> input[name="outlet"]');
@@ -95,11 +98,23 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
          var title = outletFieldUI.text().trim() + ": " + postTitleField.val();
          syndicationTitleField.val(title);
        };
+       var disableCreate = function() {
+         createButton.addClass('disabled');
+       };
+       var enableCreate = function() {
+         createButton.removeClass('disabled');
+       };
+       var disableCancel = function() {
+         formCancelButton.addClass('disabled');
+       };
+       var enableCancel = function() {
+         formCancelButton.removeClass('disabled');
+       };
        var checkSubmittable = function() {
          if (outletField.val()) {
-           createButton.removeClass('disabled');
+           enableCreate();
          } else {
-           createButton.addClass('disabled');
+           disableCreate();
          }
        }
        checkSubmittable();
@@ -112,18 +127,20 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
        outletField.change(updateSyndicationTitle);
        outletField.change(checkSubmittable);
        newButton.on('click', function() {
-           updateSyndicationTitle();
            showForm();
          });
-       formCancelButton.on('click', function() { showForm(); });
+       formCancelButton.on('click', function() {
+           if (!formCancelButton.hasClass('disabled'))
+             hideForm();
+         });
        var syndicationsInput = jQuery('input[name="pods_meta_'+ fieldName +'" ]');
        syndicationsInput.after(newButton);
        newButton.after(formContainer);
        var startSpinner = function() {
-         console.log("start spinned");
+         spinner.show();
        }
        var stopSpinner = function() {
-         console.log("stop spinner");
+         spinner.hide();
        }
        var createSyndication = function() {
          var data = {
@@ -132,8 +149,9 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
            post: parseInt(postID),
            status: "publish"
          };
-         console.log(fieldName, data);
          startSpinner();
+         disableCreate();
+         disableCancel();
          jQuery.ajax({
            type: "post",
            url: "/wp-json/wp/v2/<?php echo $type; ?>",
@@ -145,7 +163,6 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
              }
            })
          .done(function(response, textStatus) {
-             console.log("success", textStatus, response);
              var syndicationList = jQuery('#s2id_pods-form-ui-pods-meta-<?php print($medium); ?>-syndications ul.select2-choices');
              var fakeItem = jQuery("<li class=\"select2-search-choice\"><div>"
                                    + data.title + "</div></li>");
@@ -161,15 +178,17 @@ function healthe_post_syndication_post($post, $field, $pod, $medium) {
              }
              syndicationsInput.val(syndications);
              hideForm();
+             // clear title so it's not confusing if creating another syndication.
+             syndicationTitleField.val('');
            })
          .fail(function(response, textStatus) {
              console.log(textStatus, response);
            })
          .always(function() {
              stopSpinner();
+             enableCreate();
+             enableCancel();
            });
-         // clear title so it's not confusing if creating another syndication.
-         syndicationTitleField.val('');
        };
        createButton.on('click', function() {
            if (!createButton.hasClass('disabled')) {
