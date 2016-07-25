@@ -72,7 +72,7 @@ function HealtheSyndicationField(fieldName, containerId, medium, syndicationType
     this.spinner.hide();
   };
 
-  this.createSyndication = function(field) {
+  this.createSyndication = function() {
     var data = {
       title: this.syndicationTitleField.val(),
       outlet: parseInt(this.outletField.val()),
