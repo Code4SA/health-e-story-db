@@ -24,3 +24,9 @@
   border: 1px solid red;
   color: red;
 }
+
+#healthe-export-container {
+    border: 3px solid white;
+    padding: 10px;
+    margin: 5px
+}

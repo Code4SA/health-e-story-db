@@ -1,5 +1,8 @@
 <?php
 
+wp_enqueue_style( 'healthe-syndication-db' );
+wp_enqueue_script( 'healthe-syndication-db', array('jquery') );
+
 add_action( 'admin_menu', 'healthe_syndication_menu_item' );
 
 function healthe_syndication_menu_item() {
@@ -15,10 +18,15 @@ function healthe_syndication_menu_page() {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
   }
   ?>
-  <div style="border: 3px solid white; padding: 10px; margin: 5px">
+  <div id="healthe-export-container">
      <h1>Story Syndication Export</h1>
      <p>Here you can download an export file of all the stories and where they've been syndicated.</p>
-     <a href="/health-e-story-db/Health-e_Story_DB.csv">
+     <p>
+       <input type="checkbox" checked="checked" name="filter-since" />
+       <label for="since">Since</label>
+       <input name="since" type="text" value="2016-07-01" class="datepicker">
+     </p>
+     <a href="" id="healthe-download-button">
        <button type="submit" style="height: 50px">Download Story Syndication Export</button>
      </a>
      <p>You can also <a href="/wp-content/plugins/health-e-story-db/ExportDataManual.pdf" target="_blank">download a manual</a> to explain the format of the data and some suggestions for how to analyse.</p>
