@@ -8,6 +8,7 @@ Description: Allows creation of news story Syndications which link stories and s
 */
 
 wp_register_style( 'healthe-syndication-db',  '/wp-content/plugins/health-e-story-db/css/healthe-syndication-db.css');
+wp_register_script( 'healthe-syndication-db',  '/wp-content/plugins/health-e-story-db/js/healthe-syndication-db.js');
 
 include "libs/debug.php";
 include "libs/syndication_menu_page.php";
