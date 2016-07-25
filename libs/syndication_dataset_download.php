@@ -3,7 +3,10 @@
 add_action('wp','healthe_syndication_dataset_download', 0);
 
 function healthe_syndication_dataset_download() {
-  if ($_SERVER['REQUEST_URI']=='/health-e-story-db/Health-e_Story_DB.csv') {
+
+  $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+  if ($path == '/health-e-story-db/Health-e_Story_DB.csv') {
     if (!current_user_can( 'export' ) ) {
       wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     } else {
@@ -20,6 +23,9 @@ function healthe_syndication_dataset_download() {
                           'posts_per_page' => -1,
                           'fields' => 'ids'
                           );
+      if ($_GET['since']) {
+        $query_args['date_query'] = array('after' => $_GET['since']);
+      }
       $query = new WP_Query($query_args);
       // copy posts array to ensure index isn't an issue for foreach
       $ids = $query->posts;

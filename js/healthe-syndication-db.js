@@ -1,5 +1,5 @@
-function HealtheSyndicationField(fieldName, containerId, medium, syndicationType, postID, wpAPINonce) {
-  function select(selector, n) {
+var HealtheSyndications = {
+  select: function(selector, n) {
     if (n === undefined) {
       n = 1;
     }
@@ -10,6 +10,11 @@ function HealtheSyndicationField(fieldName, containerId, medium, syndicationType
     }
     return selected
   }
+};
+
+function HealtheSyndicationField(fieldName, containerId, medium, syndicationType, postID, wpAPINonce) {
+  var select = HealtheSyndications.select;
+
   this.fieldName = fieldName;
   this.containerId = containerId;
   this.newButton = jQuery('<div class="button">New</div>');
@@ -164,5 +169,34 @@ function HealtheSyndicationField(fieldName, containerId, medium, syndicationType
       e.data.createSyndication(e.data);
     }
   });
-
 }
+
+/****************************
+
+Data export
+
+****************************/
+jQuery(document).ready(function() {
+  if (jQuery('#healthe-export-container').length > 0) {
+    var select = HealtheSyndications.select;
+
+    var chkSince = select('#healthe-export-container input[name="filter-since"]');
+    var txtSince = select('#healthe-export-container input[name="since"]');
+    var btnDownload = select('#healthe-download-button');
+    var baseURL = '/health-e-story-db/Health-e_Story_DB.csv';
+
+    var updateReportURL = function() {
+      if (chkSince.is(':checked')) {
+        var URL = baseURL + '?since=' + txtSince.val();
+        btnDownload.prop('href', URL);
+      } else {
+        btnDownload.prop('href', baseURL);
+      }
+    }
+
+    txtSince.change(updateReportURL);
+    chkSince.change(updateReportURL);
+
+    updateReportURL();
+  }
+});
