@@ -5,13 +5,14 @@ function HealtheSyndicationField(fieldName, containerId, medium, syndicationType
     }
     var selected = jQuery(selector);
     if (selected.length !== n) {
-      throw "Couldn't find anything matching " + selector;
+      throw "Expected " + n + " elements matching '" + selector
+        + "' but found " + selected.length;
     }
     return selected
   }
   this.fieldName = fieldName;
   this.containerId = containerId;
-  this.newButton = select('<div class="button">New</div>');
+  this.newButton = jQuery('<div class="button">New</div>');
   this.formContainer = select('#' + containerId);
   this.formCancelButton = select('#' + containerId + '-cancel');
   this.createButton = select('#' + containerId + '-create');
