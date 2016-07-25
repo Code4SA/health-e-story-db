@@ -4,7 +4,8 @@
 
 Requirements:
 
-- Pods
+- Pods 2.6.7
+- WP REST API 2 (tested on 2.0-beta13.1)
 
 Install:
 
