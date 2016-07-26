@@ -7,7 +7,7 @@ add_action( 'admin_menu', 'healthe_syndication_menu_item' );
 
 function healthe_syndication_menu_item() {
   add_management_page( 'Health-e Story Syndication Export',
-                       'Story Syndication Export',
+                       'Health-e Syndication Export',
                        'export',
                        'health-e-story-metadata',
                        'healthe_syndication_menu_page' );
@@ -25,6 +25,10 @@ function healthe_syndication_menu_page() {
        <input type="checkbox" checked="checked" name="filter-since" />
        <label for="since">Since</label>
        <input name="since" type="text" value="2016-07-01" class="datepicker">
+     </p>
+     <p>
+       <input type="checkbox" name="format-flattened" />
+       <label for="format-flattened">Detailed Flattened table</label>
      </p>
      <a href="" id="healthe-download-button">
        <button type="submit" style="height: 50px">Download Story Syndication Export</button>
