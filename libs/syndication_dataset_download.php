@@ -56,6 +56,8 @@ function healthe_write_header($output, $delim) {
           array('post_id',
                 'headline',
                 'date',
+                'year',
+                'month',
                 'authors',
                 'categories',
                 'marginalised_voices',
@@ -128,11 +130,13 @@ function healthe_write_post($output, $delim, $post_pod) {
         $outlet = $syndication_pod->field('outlet');
         return $outlet['post_title'];
       }, $syndications));
-
+  $date = new DateTime($post_pod->field('date'));
   fputcsv($output,
           array($post_pod->field('ID'),
                 $post_pod->field('title'),
                 $post_pod->field('date'),
+                date_format($date, 'Y'),
+                date_format($date, 'F'),
                 $authors,
                 $categories,
                 $marginalised_voices,
