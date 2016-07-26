@@ -7,7 +7,7 @@ add_action( 'admin_menu', 'healthe_syndication_menu_item' );
 
 function healthe_syndication_menu_item() {
   add_management_page( 'Health-e Story Syndication Export',
-                       'Story Syndication Export',
+                       'Health-e Syndication Export',
                        'export',
                        'health-e-story-metadata',
                        'healthe_syndication_menu_page' );
@@ -26,6 +26,10 @@ function healthe_syndication_menu_page() {
        <label for="since">Since</label>
        <input name="since" type="text" value="2016-07-01" class="datepicker">
      </p>
+     <p>
+       <input type="checkbox" name="format-flattened" />
+       <label for="format-flattened">Detailed Flattened table</label>
+     </p>
      <a href="" id="healthe-download-button">
        <button type="submit" style="height: 50px">Download Story Syndication Export</button>
      </a>
@@ -33,7 +37,7 @@ function healthe_syndication_menu_page() {
   </div>
   <div style="border: 3px solid white; padding: 10px; margin: 5px">
     <h2>Import (advanced)</h2>
-    <p>Format for import Comma Separated Variable file:</p>
+    <p>Format for importing Comma Separated Variable file:</p>
     <p>The first row shows the necessary table headings, the second row shows example values. All rows must have post_status as "publish".</p>
     <style>
        table, th, td {border: 1px solid #999999}

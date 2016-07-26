@@ -6,18 +6,14 @@ function healthe_syndication_dataset_download() {
 
   $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-  if ($path == '/health-e-story-db/Health-e_Story_DB.csv') {
+  if ($path == '/health-e-story-db/health-e-stories.csv') {
     if (!current_user_can( 'export' ) ) {
       wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     } else {
       header("Content-type: application/x-msdownload", true, 200);
-      header("Content-Disposition: attachment; filename=Health-e_Story_DB.csv");
+      header("Content-Disposition: attachment; filename=health-e-stories.csv");
       header("Pragma: no-cache");
       header("Expires: 0");
-
-      $output = fopen('php://output', 'w');
-      $delim = ",";
-      healthe_write_header($output, $delim);
 
       $query_args = array('post_type' => 'post',
                           'posts_per_page' => -1,
@@ -27,11 +23,26 @@ function healthe_syndication_dataset_download() {
         $query_args['date_query'] = array('after' => $_GET['since']);
       }
       $query = new WP_Query($query_args);
+
+      $output = fopen('php://output', 'w');
+      $delim = ",";
+
+      if ($_GET['format'] == 'flat') {
+        $header_function = healthe_write_header_flat;
+        $post_loop_function = healthe_write_post_flat;
+      } else {
+        $header_function = healthe_write_header;
+        $post_loop_function = healthe_write_post;
+      }
+
+      $header_function($output, $delim);
+
       // copy posts array to ensure index isn't an issue for foreach
       $ids = $query->posts;
       foreach($ids as $id) {
         $post_pod = pods('post', $id, true);
-        healthe_write_post($output, $delim, $post_pod);
+        $post_loop_function($output, $delim, $post_pod);
+        // aggressively flush cache otherwise we quickly run out of memory
         wp_cache_flush();
       }
 
@@ -41,6 +52,20 @@ function healthe_syndication_dataset_download() {
 }
 
 function healthe_write_header($output, $delim) {
+  fputcsv($output,
+          array('post_id',
+                'headline',
+                'date',
+                'year',
+                'month',
+                'authors',
+                'categories',
+                'marginalised_voices',
+                'outlets',
+                ), $delim);
+}
+
+function healthe_write_header_flat($output, $delim) {
   fputcsv($output,
           array('post_id',
                 'headline',
@@ -88,8 +113,67 @@ function healthe_write_post($output, $delim, $post_pod) {
                               $tv_syndications,
                               $dummy_syndications);
 
+  $authors = implode(',', array_map(function($author_term) {
+        return get_user_by('login', $author_term->name)->data->display_name;
+      }, $author_terms));
+  $categories = implode(',', array_map(function($category) {
+        return $category->name;
+      }, $categories));
+  $marginalised_voices = implode(',', array_map(function($marginalised_voice_term) {
+        return $marginalised_voice_term->name;
+      }, $marginalised_voice_terms));
+  $outlets = implode(',', array_map(function($syndication) {
+        list($syndication_pod_name,
+             $media_type,
+             $outlet_pod_name) = healthe_post_type_to_medium($syndication['post_type']);
+        $syndication_pod = pods($syndication_pod_name, $syndication["ID"], false);
+        $outlet = $syndication_pod->field('outlet');
+        return $outlet['post_title'];
+      }, $syndications));
+  $date = new DateTime($post_pod->field('date'));
+  fputcsv($output,
+          array($post_pod->field('ID'),
+                $post_pod->field('title'),
+                $post_pod->field('date'),
+                date_format($date, 'Y'),
+                date_format($date, 'F'),
+                $authors,
+                $categories,
+                $marginalised_voices,
+                $outlets,
+                ),
+          $delim);
+
+}
+
+function healthe_write_post_flat($output, $delim, $post_pod) {
+  $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
+  $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
+  $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
+  $author_terms = $author_terms ?: array(new StdClass);
+  $categories = get_the_category($post_pod->field('ID'));
+  $categories = $categories ?: array(new StdClass);
+
+  $print_syndications = $post_pod->field('print_syndications') ?: array();
+  $online_syndications = $post_pod->field('online_syndications') ?: array();
+  $radio_syndications = $post_pod->field('radio_syndications') ?: array();
+  $tv_syndications = $post_pod->field('tv_syndications') ?: array();
+
+
+  if (!($print_syndications||$online_syndications||$radio_syndications||$tv_syndications)) {
+    $dummy_syndications = array(array());
+  } else {
+    $dummy_syndications = array();
+  }
+
+  $syndications = array_merge($print_syndications,
+                              $online_syndications,
+                              $radio_syndications,
+                              $tv_syndications,
+                              $dummy_syndications);
+
   foreach ($syndications as $syndication) {
-    healthe_write_syndication($output,
+    healthe_write_syndication_flat($output,
                               $delim,
                               $post_pod,
                               $syndication,
@@ -100,7 +184,7 @@ function healthe_write_post($output, $delim, $post_pod) {
   }
 }
 
-function healthe_write_syndication($output,
+function healthe_write_syndication_flat($output,
                            $delim,
                            $post_pod,
                            $syndication,

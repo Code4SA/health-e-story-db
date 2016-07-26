@@ -173,7 +173,7 @@ function HealtheSyndicationField(fieldName, containerId, medium, syndicationType
 
 /****************************
 
-Data export
+Data export page
 
 ****************************/
 jQuery(document).ready(function() {
@@ -181,21 +181,25 @@ jQuery(document).ready(function() {
     var select = HealtheSyndications.select;
 
     var chkSince = select('#healthe-export-container input[name="filter-since"]');
+    var chkFlattened = select('#healthe-export-container input[name="format-flattened"]');
     var txtSince = select('#healthe-export-container input[name="since"]');
     var btnDownload = select('#healthe-download-button');
-    var baseURL = '/health-e-story-db/Health-e_Story_DB.csv';
+    var baseURL = '/health-e-story-db/health-e-stories.csv';
 
     var updateReportURL = function() {
+      var params = {};
       if (chkSince.is(':checked')) {
-        var URL = baseURL + '?since=' + txtSince.val();
-        btnDownload.prop('href', URL);
-      } else {
-        btnDownload.prop('href', baseURL);
+        params.since = txtSince.val();
       }
+      if (chkFlattened.is(':checked')) {
+        params.format = 'flat'
+      }
+      btnDownload.prop('href', baseURL + '?' + jQuery.param(params));
     }
 
     txtSince.change(updateReportURL);
     chkSince.change(updateReportURL);
+    chkFlattened.change(updateReportURL);
 
     updateReportURL();
   }
