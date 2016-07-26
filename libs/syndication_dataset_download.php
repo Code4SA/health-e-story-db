@@ -56,10 +56,10 @@ function healthe_write_header($output, $delim) {
           array('post_id',
                 'headline',
                 'date',
-                'author',
+                'authors',
                 'categories',
                 'marginalised_voices',
-                'outlet_names',
+                'outlets',
                 ), $delim);
 }
 
@@ -86,6 +86,60 @@ function healthe_write_header_flat($output, $delim) {
 }
 
 function healthe_write_post($output, $delim, $post_pod) {
+  $marginalised_voice_terms = wp_get_post_terms($post_pod->field('ID'), 'marginalised_voices');
+  $marginalised_voice_terms = $marginalised_voice_terms ?: array(new StdClass);
+  $author_terms = wp_get_post_terms($post_pod->field('ID'), 'author');
+  $author_terms = $author_terms ?: array(new StdClass);
+  $categories = get_the_category($post_pod->field('ID'));
+  $categories = $categories ?: array(new StdClass);
+
+  $print_syndications = $post_pod->field('print_syndications') ?: array();
+  $online_syndications = $post_pod->field('online_syndications') ?: array();
+  $radio_syndications = $post_pod->field('radio_syndications') ?: array();
+  $tv_syndications = $post_pod->field('tv_syndications') ?: array();
+
+
+  if (!($print_syndications||$online_syndications||$radio_syndications||$tv_syndications)) {
+    $dummy_syndications = array(array());
+  } else {
+    $dummy_syndications = array();
+  }
+
+  $syndications = array_merge($print_syndications,
+                              $online_syndications,
+                              $radio_syndications,
+                              $tv_syndications,
+                              $dummy_syndications);
+
+  $authors = implode(',', array_map(function($author_term) {
+        return get_user_by('login', $author_term->name)->data->display_name;
+      }, $author_terms));
+  $categories = implode(',', array_map(function($category) {
+        return $category->name;
+      }, $categories));
+  $marginalised_voices = implode(',', array_map(function($marginalised_voice_term) {
+        return $marginalised_voice_term->name;
+      }, $marginalised_voice_terms));
+  $outlets = implode(',', array_map(function($syndication) {
+        list($syndication_pod_name,
+             $media_type,
+             $outlet_pod_name) = healthe_post_type_to_medium($syndication['post_type']);
+        $syndication_pod = pods($syndication_pod_name, $syndication["ID"], false);
+        $outlet = $syndication_pod->field('outlet');
+        return $outlet['post_title'];
+      }, $syndications));
+
+  fputcsv($output,
+          array($post_pod->field('ID'),
+                $post_pod->field('title'),
+                $post_pod->field('date'),
+                $authors,
+                $categories,
+                $marginalised_voices,
+                $outlets,
+                ),
+          $delim);
+
 }
 
 function healthe_write_post_flat($output, $delim, $post_pod) {

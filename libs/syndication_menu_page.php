@@ -37,7 +37,7 @@ function healthe_syndication_menu_page() {
   </div>
   <div style="border: 3px solid white; padding: 10px; margin: 5px">
     <h2>Import (advanced)</h2>
-    <p>Format for import Comma Separated Variable file:</p>
+    <p>Format for importing Comma Separated Variable file:</p>
     <p>The first row shows the necessary table headings, the second row shows example values. All rows must have post_status as "publish".</p>
     <style>
        table, th, td {border: 1px solid #999999}
