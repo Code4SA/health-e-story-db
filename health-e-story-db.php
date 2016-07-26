@@ -2,7 +2,7 @@
 /*
 Plugin Name: Health-e Story DB
 Plugin URI: http://github.com/code4sa/health-e-story-db
-Version: 1.2
+Version: 1.3
 Author: <a href="http://code4sa.org/">Code4SA</a>
 Description: Allows creation of news story Syndications which link stories and syndicating outlets. Also provides syndication data export under the Tools menu.
 */
